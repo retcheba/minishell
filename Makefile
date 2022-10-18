@@ -1,4 +1,4 @@
-SRCS		= main.c
+SRCS		= main.c get_cmd_path.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
 CC			= gcc
 CFLAGS		= -g -Wall -Wextra -Werror
