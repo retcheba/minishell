@@ -1,7 +1,8 @@
 SRCS		= main.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
 CC			= gcc
-CFLAGS		= -g -Wall -Wextra -Werror 
+CFLAGS		= -g -Wall -Wextra -Werror
+LFLAGS		= -L/usr/local/lib -I/usr/local/include -lreadline 
 NAME		= minishell
 RM			= rm -f
 LIBFT		= libft/libft.a
@@ -9,13 +10,13 @@ LIBFT		= libft/libft.a
 all:		$(NAME)
 
 %.o: %.c
-			@$(CC) $(CFLAGS) -c -o $@ $<
+			@$(CC) $(CFLAGS) $(LFLAGS) -c -o $@ $<
 
 $(LIBFT):
 			@make -s -C libft/
 
 $(NAME): 	$(OBJS) $(LIBFT)
-			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+			@$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 			@echo "\e[96m# ************************ #"
 			@echo "\e[96m#                          #"
 			@echo "\e[96m#      make completed      #"
