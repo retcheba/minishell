@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 19:15:05 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/17 19:16:01 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:19:00 by subrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 int	main(void)
 {
-	ft_printf("Hello World!\n");
+	ft_printf("Hello World de Subrandt!\n");
 	return (0);
 }
