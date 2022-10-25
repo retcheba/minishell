@@ -1,4 +1,4 @@
-SRCS		= main.c get_cmd_path.c
+SRCS		= main.c first_parsing.c ft_split_minishell.c ft_tag_word.c chained_list.c minishell_utils.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
 CC			= gcc
 CFLAGS		= -g -Wall -Wextra -Werror

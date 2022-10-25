@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 18:08:42 by retcheba          #+#    #+#             */
-/*   Updated: 2022/09/12 18:30:25 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/10/25 16:19:43 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 typedef struct s_list
 {
 	void			*content;
+	int				tag;
 	struct s_list	*next;
 }	t_list;
 

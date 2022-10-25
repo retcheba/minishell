@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 19:15:05 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/25 16:38:50 by retcheba         ###   ########.fr       */
+/*   Created: 2022/10/25 16:40:11 by retcheba          #+#    #+#             */
+/*   Updated: 2022/10/25 16:43:58 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	ft_free_var(char **tab)
 {
-	t_struct	mini;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	while (1 == 1)
+	i = 0;
+	while (tab[i])
 	{
-		mini.buff = NULL;
-		mini.buff = readline("minishell> ");
-		add_history(mini.buff);
-		first_parsing(&mini);
-		ft_tag_word(&mini);
-		if (mini.lst1->tag == EXIT)
-		{
-			printf ("exit\n");
-			ft_free_var(mini.tab);
-			ft_free_list(mini.lst1);
-			exit(0);
-		}
+		free(tab[i]);
+		i++;
 	}
-	return (0);
+	free(tab);
 }

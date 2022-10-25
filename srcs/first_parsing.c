@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   first_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 19:15:05 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/25 16:38:50 by retcheba         ###   ########.fr       */
+/*   Created: 2022/10/24 16:25:05 by retcheba          #+#    #+#             */
+/*   Updated: 2022/10/25 16:47:37 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	first_parsing(t_struct *mini)
 {
-	t_struct	mini;
+	int		i;
 
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	while (1 == 1)
+	mini->tab = ft_split_minishell(mini->buff, ' ');
+	mini->lst1 = NULL;
+	i = 0;
+	while (mini->tab[i])
 	{
-		mini.buff = NULL;
-		mini.buff = readline("minishell> ");
-		add_history(mini.buff);
-		first_parsing(&mini);
-		ft_tag_word(&mini);
-		if (mini.lst1->tag == EXIT)
-		{
-			printf ("exit\n");
-			ft_free_var(mini.tab);
-			ft_free_list(mini.lst1);
-			exit(0);
-		}
+		if (mini->lst1 == NULL)
+			mini->lst1 = new_link(mini->tab[i], -1);
+		else
+			add_link_bottom(mini->lst1, new_link(mini->tab[i], -1));
+		i++;
 	}
-	return (0);
 }
