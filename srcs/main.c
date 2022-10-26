@@ -24,14 +24,19 @@ int	main(int argc, char **argv, char **envp)
 		mini.buff = NULL;
 		mini.buff = readline("minishell> ");
 		add_history(mini.buff);
-		first_parsing(&mini);
-		ft_tag_word(&mini);
-		if (mini.lst1->tag == EXIT)
+		if (mini.buff[0] != 0)
 		{
-			printf ("exit\n");
+			parsing(&mini);
+			ft_tag_word(&mini);
+			if (mini.lst1->tag == EXIT)
+			{
+				printf ("exit\n");
+				ft_free_var(mini.tab);
+				ft_free_list(mini.lst1);
+				exit(0);
+			}
 			ft_free_var(mini.tab);
 			ft_free_list(mini.lst1);
-			exit(0);
 		}
 	}
 	return (0);

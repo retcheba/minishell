@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_free_var(char **tab)
 {
@@ -20,7 +20,21 @@ void	ft_free_var(char **tab)
 	while (tab[i])
 	{
 		free(tab[i]);
+		tab[i] = NULL;
 		i++;
 	}
 	free(tab);
+	tab = NULL;
+}
+
+int	ft_strstr(char *str, char * to_find)
+{
+	int	i;
+	
+	i = 0;
+	while (str[i] && to_find[i] && str[i] == to_find[i])
+		i++;
+	if (str[i] == '\0' && to_find[i] == '\0')
+		return (1);
+	return (0);
 }

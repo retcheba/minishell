@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_parsing.c                                    :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/24 16:25:05 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/25 16:47:37 by retcheba         ###   ########.fr       */
+/*   Created: 2022/10/26 16:11:21 by retcheba          #+#    #+#             */
+/*   Updated: 2022/10/26 16:11:25 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	first_parsing(t_struct *mini)
+void	parsing(t_struct *mini)
 {
 	int		i;
 

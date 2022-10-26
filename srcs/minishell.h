@@ -25,9 +25,9 @@
 # define OPTION 2
 # define ARG 3
 # define FILE 4
-# define PIPE 7
-# define REDIR_IN 5
-# define REDIR_OUT 6
+# define PIPE 5
+# define REDIR_IN 6
+# define REDIR_OUT 7
 # define DREDIR_IN 8
 # define DREDIR_OUT 9
 # define $ 10
@@ -41,7 +41,7 @@ typedef struct s_struct
 }	t_struct;
 
 //	MAIN FUNCTIONS
-void	first_parsing(t_struct *mini);
+void	parsing(t_struct *mini);
 char	**ft_split_minishell(char const *s, char c);
 void	ft_tag_word(t_struct *mini);
 
@@ -53,5 +53,6 @@ void	ft_free_list(t_list *lst);
 
 //	UTILS FUNCTIONS
 void	ft_free_var(char **tab);
+int	ft_strstr(char *str, char * to_find);
 
 #endif
