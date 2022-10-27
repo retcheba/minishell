@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	ft_free_var(char **tab)
+void	ft_free_tab(char **tab)
 {
 	int	i;
 
@@ -23,7 +23,8 @@ void	ft_free_var(char **tab)
 		tab[i] = NULL;
 		i++;
 	}
-	free(tab);
+	if (tab)
+		free(tab);
 	tab = NULL;
 }
 
@@ -31,6 +32,8 @@ int	ft_strstr(char *str, char * to_find)
 {
 	int	i;
 	
+	if (str == NULL || to_find == NULL)
+		return (0);
 	i = 0;
 	while (str[i] && to_find[i] && str[i] == to_find[i])
 		i++;

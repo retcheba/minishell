@@ -28,14 +28,16 @@ int	main(int argc, char **argv, char **envp)
 		{
 			parsing(&mini);
 			ft_tag_word(&mini);
+			what_to_execute(&mini, envp);
 			if (mini.lst1->tag == EXIT)
 			{
 				printf ("exit\n");
-				ft_free_var(mini.tab);
+				free(mini.buff);
+				ft_free_tab(mini.tab);
 				ft_free_list(mini.lst1);
 				exit(0);
 			}
-			ft_free_var(mini.tab);
+			ft_free_tab(mini.tab);
 			ft_free_list(mini.lst1);
 		}
 	}

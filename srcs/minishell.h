@@ -22,15 +22,14 @@
 
 # define EXIT 0
 # define CMD 1
-# define OPTION 2
-# define ARG 3
-# define FILE 4
-# define PIPE 5
-# define REDIR_IN 6
-# define REDIR_OUT 7
-# define DREDIR_IN 8
-# define DREDIR_OUT 9
-# define $ 10
+# define ARG 2
+# define FILE 3
+# define PIPE 4
+# define REDIR_IN 5
+# define REDIR_OUT 6
+# define DREDIR_IN 7
+# define DREDIR_OUT 8
+# define $ 9
 
 //	STRUCTS
 typedef struct s_struct
@@ -41,9 +40,17 @@ typedef struct s_struct
 }	t_struct;
 
 //	MAIN FUNCTIONS
+void	ft_tag_word(t_struct *mini);
+void	what_to_execute(t_struct *mini, char **envp);
+
+//	PARSING FUNCTIONS
 void	parsing(t_struct *mini);
 char	**ft_split_minishell(char const *s, char c);
-void	ft_tag_word(t_struct *mini);
+
+//	EXECUTE FUNCTIONS
+int	ft_prepare_one_cmd(t_struct *mini, char **envp);
+void	ft_execute_one_cmd(char **cmd, char **envp);
+char	*get_cmd_path(char *cmd, char **envp);
 
 //	CHAINED-LIST FUNCTIONS
 t_list	*new_link(void *content, int tag);
@@ -52,7 +59,7 @@ t_list	*add_link_top(t_list *lst, void *content, int tag);
 void	ft_free_list(t_list *lst);
 
 //	UTILS FUNCTIONS
-void	ft_free_var(char **tab);
+void	ft_free_tab(char **tab);
 int	ft_strstr(char *str, char * to_find);
 
 #endif
