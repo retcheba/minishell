@@ -18,7 +18,7 @@ void	ft_prepare_builtins(t_struct *mini, char **envp)
 	
 	(void)envp;
 	begin = mini->lst1;
-	while (mini->lst1 != NULL)
+	while (mini->lst1)
 	{
 		if (mini->lst1->tag == BUILTIN)
 		{

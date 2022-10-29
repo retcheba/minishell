@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 #include <limits.h>
+#include <fcntl.h>
 
 # define EXIT 0
 # define CMD 1
@@ -55,7 +56,7 @@ void	ft_pwd(void);
 
 //	EXECUTE FUNCTIONS
 int	ft_prepare_one_cmd(t_struct *mini, char **envp);
-void	ft_execute_one_cmd(char **cmd, char **envp);
+void	ft_execute_one_cmd(char **cmd, char **envp, int fd_in, int fd_out);
 char	*get_cmd_path(char *cmd, char **envp);
 
 //	CHAINED-LIST FUNCTIONS

@@ -68,12 +68,12 @@ void	ft_tag_word(t_struct *mini)
 		i++;
 	}
 	mini->lst1 = begin;
-	i = 0;
+	/*i = 0;
 	while (mini->lst1)
 	{
 		printf("%d: word= %s  tag= %d\n", i, (char *)mini->lst1->content, mini->lst1->tag);
 		mini->lst1 = mini->lst1->next;
 		i++;
 	}
-	mini->lst1 = begin;
+	mini->lst1 = begin;*/
 }
