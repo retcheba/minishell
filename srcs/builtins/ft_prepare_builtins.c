@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   what_to_execute.c                                  :+:      :+:    :+:   */
+/*   ft_prepare_builtins.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/26 23:57:34 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/27 00:37:51 by retcheba         ###   ########.fr       */
+/*   Created: 2022/10/29 11:42:47 by retcheba          #+#    #+#             */
+/*   Updated: 2022/10/29 11:48:16 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	what_to_execute(t_struct *mini, char **envp)
+void	ft_prepare_builtins(t_struct *mini, char **envp)
 {
-/*
-    if (pipe)
-        prepare_pipex -> execute_pipex
-    else if (builtins)
-        prepare_builtins -> execute_builtins
-    else if (one cmd)
-        prepare_one_cmd -> execute_one_cmd
-*/
-    ft_prepare_builtins(mini, envp);
-    ft_prepare_one_cmd(mini, envp);
+	t_list	*begin;
+	
+	(void)envp;
+	begin = mini->lst1;
+	while (mini->lst1 != NULL)
+	{
+		if (mini->lst1->tag == BUILTIN)
+		{
+			if(ft_strstr(mini->lst1->content, "pwd"))
+					ft_pwd();
+		}
+		mini->lst1 = mini->lst1->next;
+	}
+	mini->lst1 = begin;
 }

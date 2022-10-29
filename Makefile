@@ -1,5 +1,6 @@
 SRCS		= main.c ft_tag_word.c what_to_execute.c\
 				parsing/parsing.c parsing/ft_split_minishell.c \
+				builtins/ft_prepare_builtins.c builtins/ft_pwd.c \
 				execute_one_cmd/execute_one_cmd.c execute_one_cmd/ft_prepare_one_cmd.c execute_one_cmd/get_cmd_path.c \
 				utils/chained_list.c utils/minishell_utils.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))

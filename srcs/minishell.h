@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+#include <limits.h>
 
 # define EXIT 0
 # define CMD 1
@@ -30,6 +31,7 @@
 # define DREDIR_IN 7
 # define DREDIR_OUT 8
 # define $ 9
+# define BUILTIN 10
 
 //	STRUCTS
 typedef struct s_struct
@@ -46,6 +48,10 @@ void	what_to_execute(t_struct *mini, char **envp);
 //	PARSING FUNCTIONS
 void	parsing(t_struct *mini);
 char	**ft_split_minishell(char const *s, char c);
+
+//	BUILTINS FUNCTIONS
+void	ft_prepare_builtins(t_struct *mini, char **envp);
+void	ft_pwd(void);
 
 //	EXECUTE FUNCTIONS
 int	ft_prepare_one_cmd(t_struct *mini, char **envp);

@@ -40,15 +40,27 @@ void	ft_tag_word(t_struct *mini)
 		else if (copy->tag == REDIR_IN || copy->tag == REDIR_OUT || copy->tag == DREDIR_OUT)
 			mini->lst1->tag = FILE;
 		else if (i == 0 || copy->tag == PIPE)
-			mini->lst1->tag = CMD;
-		else
 		{
-			mini->lst1->tag = ARG;
+			if (ft_strstr(mini->tab[i], "echo") || ft_strstr(mini->tab[i], "cd")
+				|| ft_strstr(mini->tab[i], "pwd") || ft_strstr(mini->tab[i], "export")
+				|| ft_strstr(mini->tab[i], "unset") || ft_strstr(mini->tab[i], "env"))
+				mini->lst1->tag = BUILTIN;
+			else
+				mini->lst1->tag = CMD;
 		}
+		else
+			mini->lst1->tag = ARG;
 		if (i >= 2)
 		{
 			if (ft_strstr(mini->tab[i - 2], "<"))
-				mini->lst1->tag = CMD;
+			{
+				if (ft_strstr(mini->tab[i], "echo") || ft_strstr(mini->tab[i], "cd")
+					|| ft_strstr(mini->tab[i], "pwd") || ft_strstr(mini->tab[i], "export")
+					|| ft_strstr(mini->tab[i], "unset") || ft_strstr(mini->tab[i], "env"))
+					mini->lst1->tag = BUILTIN;
+				else
+					mini->lst1->tag = CMD;
+			}
 		}
 		mini->lst1 = mini->lst1->next;
 		if (i != 0)
@@ -57,11 +69,11 @@ void	ft_tag_word(t_struct *mini)
 	}
 	mini->lst1 = begin;
 	i = 0;
-	/*while (mini->lst1)
+	while (mini->lst1)
 	{
 		printf("%d: word= %s  tag= %d\n", i, (char *)mini->lst1->content, mini->lst1->tag);
 		mini->lst1 = mini->lst1->next;
 		i++;
-	}*/
+	}
 	mini->lst1 = begin;
 }
