@@ -35,6 +35,13 @@
 # define BUILTIN 10
 
 //	STRUCTS
+typedef struct s_pid
+{
+	pid_t			pid;
+	int				ok;
+	struct s_pid	*next;
+}	t_pid;
+
 typedef struct s_struct
 {
 	char	*buff;
@@ -50,7 +57,7 @@ typedef struct s_pipex
 	int		fds_pipe2[2];
 	char	**cmd;
 	char	*cmd_path;
-	t_list		*pid;
+	t_pid		*list;
 }	t_pipex;
 
 //	MAIN FUNCTIONS
@@ -67,6 +74,10 @@ void	ft_prepare_pipex(t_struct *mini, char **envp);
 void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmd, char **envp, int *fd_ios[2]);
 int		check_cmd(t_pipex *pipex, char **envp);
 void	ft_free_var(char *cmd_path, char **cmd);
+t_pid	*new_link_pipex(pid_t pid, int ok);
+t_pid	*add_link_bottom_pipex(t_pid *list, t_pid *new);
+t_pid	*add_link_top_pipex(t_pid *list, pid_t pid, int ok);
+void	ft_free_list_pipex(t_pid *list);
 
 //	BUILTINS FUNCTIONS
 void	ft_prepare_builtins(t_struct *mini, char **envp);

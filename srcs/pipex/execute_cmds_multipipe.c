@@ -55,7 +55,7 @@ static void ft_execute_first_cmd(t_pipex *pipex, char ***cmds, char **envp, int 
 	}
 	else
 		perror("Error");
-	pipex->pid = add_link_top(pipex->pid, &pid, ok);
+	pipex->list = add_link_top_pipex(pipex->list, pid, ok);
 }
 
 static void ft_execute_even_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
@@ -107,7 +107,7 @@ static void ft_execute_even_cmd(t_pipex *pipex, char ***cmds, char **envp, int f
 	}
 	else
 		perror("Error");
-	pipex->pid = add_link_bottom(pipex->pid, new_link(&pid, ok));
+	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
 }
 
 static void ft_execute_odd_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
@@ -159,7 +159,7 @@ static void ft_execute_odd_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd
 	}
 	else
 		perror("Error");
-	pipex->pid = add_link_bottom(pipex->pid, new_link(&pid, ok));
+	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
 }
 
 static void ft_execute_last_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
@@ -223,14 +223,14 @@ static void ft_execute_last_cmd(t_pipex *pipex, char ***cmds, char **envp, int f
 		if (fd_io[1] != 0)
 			close(fd_io[1]);
 	}
-	pipex->pid = add_link_bottom(pipex->pid, new_link(&pid, ok));
+	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
 }
 
 void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmds, char **envp, int *fd_ios[2])
 {
-	t_list	*begin;
+	t_pid	*begin;
 
-	pipex->pid = NULL;
+	pipex->list = NULL;
 	ft_execute_first_cmd(pipex, cmds, envp, fd_ios[0]);
 	pipex->index = 2;
 	while (pipex->index < pipex->nb_cmds)
@@ -242,16 +242,16 @@ void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmds, char **envp, int *f
 		pipex->index++;
 	}
 	ft_execute_last_cmd(pipex, cmds, envp, fd_ios[pipex->nb_cmds - 1]);
-	begin = pipex->pid;
-	while (pipex->pid)
+	begin = pipex->list;
+	while (pipex->list)
 	{
-		if (pipex->pid->tag == 1)
+		if (pipex->list->ok == 1)
 		{
-			if (*(pid_t *)pipex->pid->content != -1)
-				waitpid(*(pid_t *)pipex->pid->content, NULL, 0);
+			if (pipex->list->pid != -1)
+				waitpid(pipex->list->pid, NULL, 0);
 		}
-		pipex->pid = pipex->pid->next;
+		pipex->list = pipex->list->next;
 	}
-	pipex->pid = begin;
-	ft_free_list(pipex->pid);
+	pipex->list = begin;
+	ft_free_list_pipex(pipex->list);
 }
