@@ -35,7 +35,7 @@ void	what_to_execute(t_struct *mini, char **envp)
     }
     mini->lst1 = begin;
     if (pipex > 0)
-        printf("pipex\n");
+        ft_prepare_pipex(mini, envp);
     else if (builtin > 0)
         ft_prepare_builtins(mini, envp);
     else if (cmd > 0)

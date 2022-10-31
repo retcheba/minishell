@@ -42,13 +42,33 @@ typedef struct s_struct
 	t_list	*lst1;
 }	t_struct;
 
+typedef struct s_pipex
+{
+	int		nb_cmds;
+	int		index;
+	int		fds_pipe1[2];
+	int		fds_pipe2[2];
+	int		fd_in;
+	int		fd_out;
+	char	**cmd;
+	char	*cmd_path;
+	t_list		*pid;
+}	t_pipex;
+
 //	MAIN FUNCTIONS
 void	ft_tag_word(t_struct *mini);
 void	what_to_execute(t_struct *mini, char **envp);
+char	*get_cmd_path(char *cmd, char **envp);
 
 //	PARSING FUNCTIONS
 void	parsing(t_struct *mini);
 char	**ft_split_minishell(char const *s, char c);
+
+//	PIPEX FUNCTIONS
+void	ft_prepare_pipex(t_struct *mini, char **envp);
+void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmd, char **envp);
+int		check_cmd(t_pipex *pipex, char **envp);
+void	ft_free_var(char *cmd_path, char **cmd);
 
 //	BUILTINS FUNCTIONS
 void	ft_prepare_builtins(t_struct *mini, char **envp);
@@ -57,7 +77,6 @@ void	ft_pwd(void);
 //	EXECUTE FUNCTIONS
 int	ft_prepare_one_cmd(t_struct *mini, char **envp);
 void	ft_execute_one_cmd(char **cmd, char **envp, int fd_in, int fd_out);
-char	*get_cmd_path(char *cmd, char **envp);
 
 //	CHAINED-LIST FUNCTIONS
 t_list	*new_link(void *content, int tag);
