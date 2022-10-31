@@ -48,8 +48,6 @@ typedef struct s_pipex
 	int		index;
 	int		fds_pipe1[2];
 	int		fds_pipe2[2];
-	int		fd_in;
-	int		fd_out;
 	char	**cmd;
 	char	*cmd_path;
 	t_list		*pid;
@@ -66,7 +64,7 @@ char	**ft_split_minishell(char const *s, char c);
 
 //	PIPEX FUNCTIONS
 void	ft_prepare_pipex(t_struct *mini, char **envp);
-void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmd, char **envp);
+void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmd, char **envp, int *fd_ios[2]);
 int		check_cmd(t_pipex *pipex, char **envp);
 void	ft_free_var(char *cmd_path, char **cmd);
 
