@@ -65,6 +65,7 @@ static int  check_redir_out(t_struct *mini)
     int         fd_out;
     t_list    *begin;
 
+    fd_out = 0;
     begin = mini->lst1;
     while (mini->lst1)
     {
@@ -73,13 +74,17 @@ static int  check_redir_out(t_struct *mini)
             fd_out = open(mini->lst1->next->content, O_WRONLY | O_TRUNC | O_CREAT, 0644);
             if (fd_out == -1)
                 perror("Error");
-            mini->lst1 = begin;
-            return(fd_out);
+        }
+        if (mini->lst1->tag == DREDIR_OUT && mini->lst1->next->tag == FILE)
+        {
+            fd_out = open(mini->lst1->next->content, O_WRONLY | O_APPEND |O_CREAT, 0644);
+            if (fd_out == -1)
+                perror("Error");
         }
         mini->lst1 = mini->lst1->next;
     }
     mini->lst1 = begin;
-    return (0);
+    return(fd_out);
 }
 
 int	ft_prepare_one_cmd(t_struct *mini, char **envp)
