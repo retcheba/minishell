@@ -10,26 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../minishell.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <limits.h>
+#include "../minishell.h"
 
 //Print the absolute pathname of the current working directory.
 //PATH_MAX = 4096 (limits.h)
-void	ft_pwd(char *buf)
+void	ft_pwd(void)
 {
 	char	*pwd;
 
-	if (!buf)
-		return ;//ft_error
-	pwd = getcwd(buf, PATH_MAX);
+	pwd = getcwd(NULL, PATH_MAX);
 	printf("%s\n", pwd);
-}
-
-int	main(int argc, char **argv)
-{
-	(void)argc;
-	ft_pwd(argv[1]);
-	return (0);
 }

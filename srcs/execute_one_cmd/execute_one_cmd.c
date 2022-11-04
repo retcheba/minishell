@@ -66,7 +66,8 @@ void ft_execute_one_cmd(char **cmd, char **envp, int fd_in, int fd_out)
 			cmd_path = get_cmd_path(cmd[0], envp);
 		if (!cmd_path)
 		{
-			write(2, "Error: command not found\n", 25);
+			write(2, cmd[0], ft_strlen(cmd[0]));
+			write(2, ": command not found\n", 20);
 			ft_free_cmd(cmd_path, cmd);
 		}
 		else
@@ -87,6 +88,7 @@ void ft_execute_one_cmd(char **cmd, char **envp, int fd_in, int fd_out)
 					close(fd_out);
 				}
 				execve(cmd_path, cmd, envp);
+
 			}
 			ft_free_cmd(cmd_path, cmd);
 			if (fd_in != 0)

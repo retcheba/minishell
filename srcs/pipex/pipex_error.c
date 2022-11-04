@@ -42,7 +42,8 @@ int	check_cmd(t_pipex *pipex, char **envp)
 		pipex->cmd_path = get_cmd_path(pipex->cmd[0], envp);
 	if (!pipex->cmd_path)
 	{
-		write(2, "Error: command not found\n", 25);
+		write(2, pipex->cmd[0], ft_strlen(pipex->cmd[0]));
+		write(2, ": command not found\n", 20);
 		ft_free_var(pipex->cmd_path, pipex->cmd);
 		return (0);
 	}
