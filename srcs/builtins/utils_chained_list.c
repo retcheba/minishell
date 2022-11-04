@@ -55,6 +55,15 @@ t_lst	*ft_lstadd_back(t_lst *lst, t_lst *new)
 	return (tmp);
 }
 
+void	ft_swap_content(t_lst **list)
+{
+	char	*swap;
+
+	swap = (*list)->content;
+	(*list)->content = (*list)->next->content;
+	(*list)->next->content = swap;
+}
+
 void	ft_free_list(t_lst *lst)
 {
 	t_lst	*tmp;

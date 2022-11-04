@@ -6,7 +6,7 @@
 /*   By: subrandt <subrandt@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 09:40:11 by subrandt          #+#    #+#             */
-/*   Updated: 2022/10/29 14:49:12 by subrandt         ###   ########.fr       */
+/*   Updated: 2022/11/03 17:00:58 by subrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_lst	*ft_lstlast(t_lst *lst);
 t_lst	*ft_lstadd_back(t_lst *lst, t_lst *new);
 void	ft_free_list(t_lst *lst);
 
-void	print_env(t_lst *env)
+//prints env 
+static void	print_env(t_lst *env)
 {
 	t_lst	*tmp;
 
@@ -37,6 +38,7 @@ void	print_env(t_lst *env)
 	}
 }
 
+//creates the env-list
 void	ft_env(char **envp, t_lst *env)
 {
 	int		i;
