@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:35:06 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/26 16:25:27 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/05 22:02:08 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	ft_tag_word(t_struct *mini)
 	int	i;
 	t_list	*begin;
 	t_list	*copy;
+	t_list	*ccopy;
 
 	i = 0;
 	begin = mini->lst1;
 	copy = mini->lst1;
+	ccopy = mini->lst1;
 	while (mini->lst1)
 	{
 //		if (ft_strnstr(mini->tab[i], "$", ft_strlen(mini->tab[i])) != NULL)
@@ -37,7 +39,7 @@ void	ft_tag_word(t_struct *mini)
 			mini->lst1->tag = DREDIR_IN;
 		else if (ft_strstr(mini->tab[i], ">>"))
 			mini->lst1->tag = DREDIR_OUT;
-		else if (copy->tag == REDIR_IN || copy->tag == REDIR_OUT || copy->tag == DREDIR_OUT)
+		else if (copy->tag == REDIR_IN || copy->tag == DREDIR_IN || copy->tag == REDIR_OUT || copy->tag == DREDIR_OUT)
 			mini->lst1->tag = FILE;
 		else if (i == 0 || copy->tag == PIPE)
 		{
@@ -48,23 +50,22 @@ void	ft_tag_word(t_struct *mini)
 			else
 				mini->lst1->tag = CMD;
 		}
+		else if (ccopy->tag == REDIR_IN || ccopy->tag == DREDIR_IN)
+		{
+			if (/*ft_strstr(mini->tab[i], "echo") ||*/ ft_strstr(mini->tab[i], "cd")
+				|| ft_strstr(mini->tab[i], "pwd") || ft_strstr(mini->tab[i], "export")
+				|| ft_strstr(mini->tab[i], "unset") || ft_strstr(mini->tab[i], "env"))
+				mini->lst1->tag = BUILTIN;
+			else
+				mini->lst1->tag = CMD;
+		}
 		else
 			mini->lst1->tag = ARG;
-		if (i >= 2)
-		{
-			if (ft_strstr(mini->tab[i - 2], "<"))
-			{
-				if (/*ft_strstr(mini->tab[i], "echo") ||*/ ft_strstr(mini->tab[i], "cd")
-					|| ft_strstr(mini->tab[i], "pwd") || ft_strstr(mini->tab[i], "export")
-					|| ft_strstr(mini->tab[i], "unset") || ft_strstr(mini->tab[i], "env"))
-					mini->lst1->tag = BUILTIN;
-				else
-					mini->lst1->tag = CMD;
-			}
-		}
 		mini->lst1 = mini->lst1->next;
 		if (i != 0)
 			copy = copy->next;
+		if (i >= 2)
+			ccopy = ccopy->next;
 		i++;
 	}
 	mini->lst1 = begin;
@@ -74,6 +75,6 @@ void	ft_tag_word(t_struct *mini)
 		printf("%d: word= %s  tag= %d\n", i, (char *)mini->lst1->content, mini->lst1->tag);
 		mini->lst1 = mini->lst1->next;
 		i++;
-	}
-	mini->lst1 = begin;*/
+	}*/
+	mini->lst1 = begin;
 }

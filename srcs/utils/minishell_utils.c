@@ -41,3 +41,53 @@ int	ft_strstr(char *str, char * to_find)
 		return (1);
 	return (0);
 }
+
+int  check_redir_in(t_struct *mini)
+{
+    int         fd_in;
+    t_list    *begin;
+
+    fd_in = 0;
+    begin = mini->lst1;
+    while (mini->lst1 && mini->lst1->tag != PIPE)
+    {
+        if (mini->lst1->tag == REDIR_IN && mini->lst1->next->tag == FILE)
+        {
+            fd_in = open(mini->lst1->next->content, O_RDONLY);
+            if (fd_in == -1)
+                perror("Error");
+        }
+        if (mini->lst1->tag == DREDIR_IN && mini->lst1->next->tag == FILE)
+            fd_in = ft_heredoc(mini->lst1->next->content);
+        mini->lst1 = mini->lst1->next;
+    }
+    mini->lst1 = begin;
+    return (fd_in);
+}
+
+int  check_redir_out(t_struct *mini)
+{
+    int         fd_out;
+    t_list    *begin;
+
+    fd_out = 0;
+    begin = mini->lst1;
+    while (mini->lst1 && mini->lst1->tag != PIPE)
+    {
+        if (mini->lst1->tag == REDIR_OUT && mini->lst1->next->tag == FILE)
+        {
+            fd_out = open(mini->lst1->next->content, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+            if (fd_out == -1)
+                perror("Error");
+        }
+        if (mini->lst1->tag == DREDIR_OUT && mini->lst1->next->tag == FILE)
+        {
+            fd_out = open(mini->lst1->next->content, O_WRONLY | O_APPEND | O_CREAT, 0644);
+            if (fd_out == -1)
+                perror("Error");
+        }
+        mini->lst1 = mini->lst1->next;
+    }
+    mini->lst1 = begin;
+    return (fd_out);
+}

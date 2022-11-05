@@ -40,4 +40,6 @@ void	what_to_execute(t_struct *mini, char **envp)
         ft_prepare_builtins(mini, envp);
     else if (cmd > 0)
         ft_prepare_one_cmd(mini, envp);
+    else
+        check_redir_in(mini);
 }

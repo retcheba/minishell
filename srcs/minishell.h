@@ -94,7 +94,10 @@ t_list	*add_link_top(t_list *lst, void *content, int tag);
 void	ft_free_list(t_list *lst);
 
 //	UTILS FUNCTIONS
+int	ft_heredoc(char *stop);
 void	ft_free_tab(char **tab);
 int	ft_strstr(char *str, char * to_find);
+int  check_redir_out(t_struct *mini);
+int  check_redir_in(t_struct *mini);
 
 #endif
