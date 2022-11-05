@@ -10,59 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../minishell.h"
-#include <stdlib.h>
-#include <stdio.h>
-
-typedef struct s_lst
-{
-	char			*content;
-	struct s_lst	*next;
-}				t_lst;
-
-t_lst	*new_link(void *content);
-t_lst	*ft_lstlast(t_lst *lst);
-t_lst	*ft_lstadd_back(t_lst *lst, t_lst *new);
-void	ft_free_list(t_lst *lst);
+#include "../minishell.h"
 
 //prints env 
-static void	print_env(t_lst *env)
+static void	print_env(t_list *env)
 {
-	t_lst	*tmp;
+	t_list	*tmp;
 
 	tmp = env;
 	while (tmp)
 	{
-		printf("%s\n", tmp->content);
+		printf("%s\n", (char *)tmp->content);
 		tmp = tmp->next;
 	}
 }
 
 //creates the env-list
-void	ft_env(char **envp, t_lst *env)
+void	ft_env(t_struct *mini, char **envp)
 {
 	int		i;
 
 	i = 0;
-	env = NULL;
+	mini->env = NULL;
 	while (envp[i])
 	{
-		if (env == NULL)
-			env = new_link(envp[i]);
+		if (mini->env == NULL)
+			mini->env = new_link(envp[i], 0);
 		else
-			ft_lstadd_back(env, new_link(envp[i]));
+			add_link_bottom(mini->env, new_link(envp[i], 0));
 		i++;
 	}
-	print_env(env);
-	ft_free_list(env);
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_lst	env;
-
-	(void)argc;
-	(void)argv;
-	ft_env(envp, &env);
-	return (0);
+	print_env(mini->env);
+	ft_free_list(mini->env);
 }

@@ -24,6 +24,8 @@ void	ft_prepare_builtins(t_struct *mini, char **envp)
 		{
 			if(ft_strstr(mini->lst1->content, "pwd"))
 					ft_pwd();
+			if(ft_strstr(mini->lst1->content, "env"))
+					ft_env(mini, envp);
 		}
 		mini->lst1 = mini->lst1->next;
 	}

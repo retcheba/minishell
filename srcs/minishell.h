@@ -47,6 +47,7 @@ typedef struct s_struct
 	char	*buff;
 	char	**tab;
 	t_list	*lst1;
+	t_list	*env;
 }	t_struct;
 
 typedef struct s_pipex
@@ -82,6 +83,7 @@ void	ft_free_list_pipex(t_pid *list);
 //	BUILTINS FUNCTIONS
 void	ft_prepare_builtins(t_struct *mini, char **envp);
 void	ft_pwd(void);
+void	ft_env(t_struct *mini, char **envp);
 
 //	EXECUTE FUNCTIONS
 int	ft_prepare_one_cmd(t_struct *mini, char **envp);
