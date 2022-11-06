@@ -22,28 +22,28 @@ $(LIBFT):
 
 $(NAME): 	$(OBJS) $(LIBFT)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LFLAGS) -o $(NAME)
-			@echo "\e[96m# ************************ #"
-			@echo "\e[96m#                          #"
-			@echo "\e[96m#      make completed      #"
-			@echo "\e[96m#                          #"
-			@echo "\e[96m# ************************ #"
+			@echo "\e[1;92m# ************************ #\e[0m"
+			@echo "\e[1;92m#                          #\e[0m"
+			@echo "\e[1;92m#      make completed      #\e[0m"
+			@echo "\e[1;92m#                          #\e[0m"
+			@echo "\e[1;92m# ************************ #\e[0m"
 
 clean:
 			@$(RM) $(OBJS)
 			@make -s fclean -C libft/
-			@echo "\e[96m# ************************ #"
-			@echo "\e[96m#                          #"
-			@echo "\e[96m#   make clean completed   #"
-			@echo "\e[96m#                          #"
-			@echo "\e[96m# ************************ #"
+			@echo "\e[1;93m# ************************ #\e[0m"
+			@echo "\e[1;93m#                          #\e[0m"
+			@echo "\e[1;93m#   make clean completed   #\e[0m"
+			@echo "\e[1;93m#                          #\e[0m"
+			@echo "\e[1;93m# ************************ #\e[0m"
 
 fclean:		clean
 			@$(RM) $(NAME)
-			@echo "\e[96m# ************************ #"
-			@echo "\e[96m#                          #"
-			@echo "\e[96m#  make fclean completed   #"
-			@echo "\e[96m#                          #"
-			@echo "\e[96m# ************************ #"
+			@echo "\e[1;91m# ************************ #\e[0m"
+			@echo "\e[1;91m#                          #\e[0m"
+			@echo "\e[1;91m#  make fclean completed   #\e[0m"
+			@echo "\e[1;91m#                          #\e[0m"
+			@echo "\e[1;91m# ************************ #\e[0m"
 
 re:			fclean all
 
