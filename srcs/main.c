@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1 == 1)
 	{
 		mini.buff = NULL;
-		mini.buff = readline("\e[1;96mminishell>\e[0m  ");
+		mini.buff = readline("\e[1;91mminishell\e[0m  ");
 		add_history(mini.buff);
 		if (mini.buff[0] != 0)
 		{
