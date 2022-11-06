@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 19:13:48 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/25 16:42:48 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/06 04:49:48 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
-#include <limits.h>
-#include <fcntl.h>
+# include <limits.h>
+# include <fcntl.h>
 
 # define EXIT 0
 # define CMD 1
@@ -31,7 +31,7 @@
 # define REDIR_OUT 6
 # define DREDIR_IN 7
 # define DREDIR_OUT 8
-# define $ 9
+# define PATH 9
 # define BUILTIN 10
 
 //	STRUCTS
@@ -59,7 +59,7 @@ typedef struct s_pipex
 	int		fds_pipe2[2];
 	char	**cmd;
 	char	*cmd_path;
-	t_pid		*list;
+	t_pid	*list;
 }	t_pipex;
 
 //	MAIN FUNCTIONS
@@ -73,8 +73,8 @@ char	**ft_split_minishell(char const *s, char c);
 
 //	PIPEX FUNCTIONS
 void	ft_prepare_pipex(t_struct *mini, char **envp);
-void	ft_execute_cmds_multipipe(t_pipex *pipex, char ***cmd, char **envp, int *fd_ios[2]);
-int		check_cmd(t_pipex *pipex, char **envp);
+void	ft_pipex(t_pipex *pipex, char ***cmd, char **envp, int *fd_ios[2]);
+int		check_cmd_pipex(t_pipex *pipex, char **envp);
 void	ft_free_var(char *cmd_path, char **cmd);
 t_pid	*new_link_pipex(pid_t pid, int ok);
 t_pid	*add_link_bottom_pipex(t_pid *list, t_pid *new);
@@ -91,10 +91,9 @@ void	print_export(t_list *export);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 
-
-//	EXECUTE FUNCTIONS
-int	ft_prepare_one_cmd(t_struct *mini, char **envp);
-void	ft_execute_one_cmd(char **cmd, char **envp, int fd_in, int fd_out);
+//	SIMPLE CMD FUNCTIONS
+int		ft_prepare_simple_cmd(t_struct *mini, char **envp);
+void	simple_cmd(char **cmd, char **envp, int fd_io[2]);
 
 //	CHAINED-LIST FUNCTIONS
 t_list	*new_link(void *content, int tag);
@@ -103,10 +102,10 @@ t_list	*add_link_top(t_list *lst, void *content, int tag);
 void	ft_free_list(t_list *lst);
 
 //	UTILS FUNCTIONS
-int	ft_heredoc(char *stop);
+int		ft_heredoc(char *stop);
 void	ft_free_tab(char **tab);
-int	ft_strstr(char *str, char * to_find);
-int  check_redir_out(t_struct *mini);
-int  check_redir_in(t_struct *mini);
+int		ft_strstr(char *str, char *to_find);
+int		check_redir_out(t_struct *mini);
+int		check_redir_in(t_struct *mini);
 
 #endif

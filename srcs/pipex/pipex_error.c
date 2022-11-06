@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:29:12 by retcheba          #+#    #+#             */
-/*   Updated: 2022/09/28 04:34:14 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/06 04:15:15 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*detach_cmd_from_path(char *cmd_path)
 	return (cmd);
 }
 
-int	check_cmd(t_pipex *pipex, char **envp)
+int	check_cmd_pipex(t_pipex *pipex, char **envp)
 {
 	if (access(pipex->cmd[0], F_OK | X_OK) == 0)
 	{
