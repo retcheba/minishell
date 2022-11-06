@@ -69,7 +69,7 @@ static void	print_my_export(char *s)
 }
 
 //prints export
-void	check_print_export(t_list *export)
+void	print_export(t_list *export)
 {
 	t_list	*tmp;
 
@@ -83,7 +83,7 @@ void	check_print_export(t_list *export)
 }
 
 //creates list export, sorted by ascii-order
-void	ft_export(t_struct *mini, char **envp)
+void	ft_init_export(t_struct *mini, char **envp)
 {
 	int		i;
 
@@ -98,6 +98,4 @@ void	ft_export(t_struct *mini, char **envp)
 		i++;
 	}
 	ft_sort_ascii_export(mini->export);
-	check_print_export(mini->export);
-	ft_free_list(mini->export);
 }

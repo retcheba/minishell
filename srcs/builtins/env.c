@@ -13,7 +13,7 @@
 #include "../minishell.h"
 
 //prints env 
-static void	print_env(t_list *env)
+void	print_env(t_list *env)
 {
 	t_list	*tmp;
 
@@ -26,7 +26,7 @@ static void	print_env(t_list *env)
 }
 
 //creates the env-list
-void	ft_env(t_struct *mini, char **envp)
+void	ft_init_env(t_struct *mini, char **envp)
 {
 	int		i;
 
@@ -40,6 +40,4 @@ void	ft_env(t_struct *mini, char **envp)
 			add_link_bottom(mini->env, new_link(envp[i], 0));
 		i++;
 	}
-	print_env(mini->env);
-	ft_free_list(mini->env);
 }

@@ -41,10 +41,12 @@ int	main(int argc, char **argv, char **envp)
 	t_struct	mini;
 	char	*username;
 
-	username = getenv("USER");
 	(void)argc;
 	(void)argv;
+	username = getenv("USER");
 	ft_init_minishell(username);
+	ft_init_env(&mini, envp);
+	ft_init_export(&mini, envp);
 	while (1 == 1)
 	{
 		mini.buff = NULL;
@@ -67,5 +69,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_free_list(mini.lst1);
 		}
 	}
+	ft_free_list(mini.env);
+	ft_free_list(mini.export);
 	return (0);
 }

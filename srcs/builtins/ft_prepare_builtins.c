@@ -23,11 +23,11 @@ void	ft_prepare_builtins(t_struct *mini, char **envp)
 		if (mini->lst1->tag == BUILTIN)
 		{
 			if(ft_strstr(mini->lst1->content, "pwd"))
-					ft_pwd();
+				ft_pwd();
 			if(ft_strstr(mini->lst1->content, "env"))
-					ft_env(mini, envp);
+				print_env(mini->env);
 			if(ft_strstr(mini->lst1->content, "export"))
-				ft_export(mini, envp);
+				print_export(mini->export);
 		}
 		mini->lst1 = mini->lst1->next;
 	}

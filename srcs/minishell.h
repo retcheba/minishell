@@ -84,8 +84,10 @@ void	ft_free_list_pipex(t_pid *list);
 //	BUILTINS FUNCTIONS
 void	ft_prepare_builtins(t_struct *mini, char **envp);
 void	ft_pwd(void);
-void	ft_env(t_struct *mini, char **envp);
-void	ft_export(t_struct *mini, char **envp);
+void	ft_init_env(t_struct *mini, char **envp);
+void	print_env(t_list *env);
+void	ft_init_export(t_struct *mini, char **envp);
+void	print_export(t_list *export);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 
