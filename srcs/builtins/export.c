@@ -10,28 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../minishell.h"
-#include <stdlib.h>
-#include <stdio.h>
-
-typedef struct s_lst
-{
-	char			*content;
-	struct s_lst	*next;
-}				t_lst;
-
-t_lst	*new_link(void *content);
-t_lst	*ft_lstlast(t_lst *lst);
-t_lst	*ft_lstadd_back(t_lst *lst, t_lst *new);
-void	ft_export(char **envp, t_lst *export);
-int		ft_strcmp(char *s1, char *s2);
-void	ft_swap_content(t_lst **list);
-void	ft_free_list(t_lst *lst);
+#include "../minishell.h"
 
 //sorts the list  according to ascii-order
-static void	ft_sort_ascii_export(t_lst *export)
+static void	ft_sort_ascii_export(t_list *export)
 {
-	t_lst	*tmp;
+	t_list	*tmp;
 
 	tmp = export;
 	while (tmp->next)
@@ -85,9 +69,9 @@ static void	print_my_export(char *s)
 }
 
 //prints export
-void	check_print_export(t_lst *export)
+void	check_print_export(t_list *export)
 {
-	t_lst	*tmp;
+	t_list	*tmp;
 
 	tmp = export;
 	while (tmp)
@@ -99,31 +83,21 @@ void	check_print_export(t_lst *export)
 }
 
 //creates list export, sorted by ascii-order
-void	ft_export(char **envp, t_lst *export)
+void	ft_export(t_struct *mini, char **envp)
 {
 	int		i;
 
 	i = 0;
-	export = NULL;
+	mini->export = NULL;
 	while (envp[i])
 	{
-		if (export == NULL)
-			export = new_link(envp[i]);
+		if (mini->export == NULL)
+			mini->export = new_link(envp[i], 0);
 		else
-			ft_lstadd_back(export, new_link(envp[i]));
+			add_link_bottom(mini->export, new_link(envp[i], 0));
 		i++;
 	}
-	ft_sort_ascii_export(export);
-	check_print_export(export);
-	ft_free_list(export);
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_lst	export;
-
-	(void)argc;
-	(void)argv;
-	ft_export(envp, &export);
-	return (0);
+	ft_sort_ascii_export(mini->export);
+	check_print_export(mini->export);
+	ft_free_list(mini->export);
 }

@@ -10,13 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../minishell.h"
-
-typedef struct s_lst
-{
-	char			*content;
-	struct s_lst	*next;
-}				t_lst;
+#include "../minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -26,4 +20,13 @@ int	ft_strcmp(char *s1, char *s2)
 	while ((s1[i] - s2[i] == 0) && s1[i] != '\0')
 		i++;
 	return (s1[i] - s2[i]);
+}
+
+void	ft_swap_content(t_list **list)
+{
+	char	*swap;
+
+	swap = (*list)->content;
+	(*list)->content = (*list)->next->content;
+	(*list)->next->content = swap;
 }
