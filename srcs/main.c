@@ -14,8 +14,7 @@
 
 static void	ft_init_minishell(char *username)
 {
-//	printf("\033[H\033[2J");
-	system("clear");
+	printf("\033[H\033[2J");
 	printf("\e[1;96m-----------------------------------------");
 	printf("\e[1;96m--------------------------\e[0m\n");
 	printf("\e[91m███╗   ███╗██╗███╗   ██╗██╗");

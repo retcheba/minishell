@@ -12,10 +12,32 @@
 
 #include "../minishell.h"
 
+static size_t	ft_check_quotes(const char *s, size_t i)
+{
+	size_t	j;
+
+	if (s[i] == '\"')
+	{
+		j = 1;
+		while (s[i + j] != '\"' && s[i + j])
+			j++;
+		if (s[i + j] == '\"')
+			i += j;
+	}
+	if (s[i] == '\'')
+	{
+		j = 1;
+		while (s[i + j] != '\'' && s[i + j])
+			j++;
+		if (s[i + j] == '\'')
+			i += j;
+	}
+	return (i);
+}
+
 static size_t	cmpt_words(const char *s, char c)
 {
 	size_t	i;
-	size_t	l;
 	size_t	cmpt;
 
 	i = 0;
@@ -25,22 +47,7 @@ static size_t	cmpt_words(const char *s, char c)
 		cmpt = 1;
 	while (s[i])
 	{
-		if (s[i] == '\"')
-		{
-			l = 1;
-			while (s[i + l] != '\"' && s[i + l])
-				l++;
-			if (s[i + l] == '\"')
-				i += l;
-		}
-		if (s[i] == '\'')
-		{
-			l = 1;
-			while (s[i + l] != '\'' && s[i + l])
-				l++;
-			if (s[i + l] == '\'')
-				i += l;
-		}
+		i = ft_check_quotes(s, i);
 		if (s[i] == c && s[i + 1] != c && s[i + 1] != 0)
 			cmpt++;
 		i++;
@@ -48,12 +55,39 @@ static size_t	cmpt_words(const char *s, char c)
 	return (cmpt + 1);
 }
 
+static size_t	ft_len_word(const char *s, char c, size_t i, size_t len)
+{
+	size_t	j;
+
+	j = 0;
+	while (s[i + len] != c && s[i + len])
+	{
+		if (s[i + len] == '\"')
+		{
+			j = 1;
+			while (s[i + len + j] != '\"' && s[i + len + j])
+				j++;
+			if (s[i + len + j] == '\"')
+				len += j;
+		}
+		if (s[i + len] == '\'')
+		{
+			j = 1;
+			while (s[i + len + j] != '\'' && s[i + len + j])
+				j++;
+			if (s[i + len + j] == '\'')
+				len += j;
+		}
+		len++;
+	}
+	return (len);
+}
+
 static char	**fill_tab(const char *s, char c, char **str)
 {
-	unsigned int	i;
-	size_t			len;
-	size_t			l;
-	size_t			cmp;
+	size_t	i;
+	size_t	len;
+	size_t	cmp;
 
 	i = 0;
 	len = 0;
@@ -62,26 +96,7 @@ static char	**fill_tab(const char *s, char c, char **str)
 	{
 		while (s[i] == c && s[i])
 			i++;
-		while (s[i + len] != c && s[i + len])
-		{
-			if (s[i + len] == '\"')
-			{
-				l = 1;
-				while (s[i + len + l] != '\"' && s[i + len + l])
-					l++;
-				if (s[i + len + l] == '\"')
-					len += l;
-			}
-			if (s[i + len] == '\'')
-			{
-				l = 1;
-				while (s[i + len + l] != '\'' && s[i + len + l])
-					l++;
-				if (s[i + len + l] == '\'')
-					len += l;
-			}
-			len++;
-		}
+		len = ft_len_word(s, c, i, len);
 		if (len > 0)
 		{
 			str[cmp] = ft_substr(s, i, len);
