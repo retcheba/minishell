@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 19:15:05 by retcheba          #+#    #+#             */
-/*   Updated: 2022/11/06 02:49:26 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/09 00:40:27 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	ft_init_minishell(char *username)
 {
 	printf("\033[H\033[2J");
-	printf("\e[1;96m-----------------------------------------");
-	printf("\e[1;96m--------------------------\e[0m\n");
-	printf("\e[91m███╗   ███╗██╗███╗   ██╗██╗");
+	printf("\033[1;96m-----------------------------------------");
+	printf("\033[1;96m--------------------------\033[0m\n");
+	printf("\033[91m███╗   ███╗██╗███╗   ██╗██╗");
 	printf("███████╗██╗  ██╗███████╗██╗     ██╗     \n");
 	printf("████╗ ████║██║████╗  ██║██║██╔════╝");
 	printf("██║  ██║██╔════╝██║     ██║     \n");
@@ -28,10 +28,10 @@ static void	ft_init_minishell(char *username)
 	printf("██║ ╚═╝ ██║██║██║ ╚████║██║███████║");
 	printf("██║  ██║███████╗███████╗███████╗\n");
 	printf("╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝");
-	printf("╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\e[0m\n");
-	printf("\e[1;96mMade by: subrandt & retcheba\e[0m\n");
-	printf("\e[1;96m-----------------------------------------");
-	printf("\e[1;96m--------------------------\e[0m\n");
+	printf("╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\033[0m\n");
+	printf("\033[1;96mMade by: subrandt & retcheba\033[0m\n");
+	printf("\033[1;96m-----------------------------------------");
+	printf("\033[1;96m--------------------------\033[0m\n");
 	printf("\nWelcome %s\n", username);
 }
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_init_export(&mini, envp);
 	while (1 == 1)
 	{
-		mini.buff = readline("\e[1;91mminishell\e[0m  ");
+		mini.buff = readline("\033[1;91mminishell\033[0m  ");
 		add_history(mini.buff);
 		if (mini.buff[0] != 0)
 		{
