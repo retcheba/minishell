@@ -12,236 +12,10 @@
 
 #include "../minishell.h"
 
-static void	first_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
-{
-	pid_t	pid;
-	int		ok;
-
-	pid = 0;
-	ok = 0;
-	if (pipe(pipex->fds_pipe1) != -1)
-	{
-		pipex->cmd = cmds[0];
-		if (check_cmd_pipex(pipex, envp) && fd_io[0] != -1)
-		{
-			pid = fork();
-			if (pid == -1)
-				perror("Error");
-			if (pid == 0)
-			{
-				if (fd_io[0] != 0)
-				{
-					dup2(fd_io[0], 0);
-					close(fd_io[0]);
-				}
-				if (fd_io[1] != 0)
-				{
-					dup2(fd_io[1], 1);
-					close(fd_io[1]);
-				}
-				else
-					dup2(pipex->fds_pipe1[1], 1);
-				close(pipex->fds_pipe1[0]);
-				close(pipex->fds_pipe1[1]);
-				execve(pipex->cmd_path, pipex->cmd, envp);
-			}
-			ok = 1;
-			ft_free_var(pipex->cmd_path, pipex->cmd);
-			if (fd_io[0] != 0)
-				close(fd_io[0]);
-			if (fd_io[1] != 0)
-				close(fd_io[1]);
-		}
-	}
-	else
-		perror("Error");
-	pipex->list = add_link_top_pipex(pipex->list, pid, ok);
-}
-
-static void	even_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
-{
-	pid_t	pid;
-	int		ok;
-
-	pid = 0;
-	ok = 0;
-	if (pipe(pipex->fds_pipe2) != -1)
-	{
-		pipex->cmd = cmds[pipex->index - 1];
-		if (check_cmd_pipex(pipex, envp) && fd_io[0] != -1)
-		{
-			pid = fork();
-			if (pid == -1)
-				perror("Error");
-			if (pid == 0)
-			{
-				if (fd_io[0] != 0)
-				{
-					dup2(fd_io[0], 0);
-					close(fd_io[0]);
-				}
-				else
-					dup2(pipex->fds_pipe1[0], 0);
-				if (fd_io[1] != 0)
-				{
-					dup2(fd_io[1], 1);
-					close(fd_io[1]);
-				}
-				else
-					dup2(pipex->fds_pipe2[1], 1);
-				close(pipex->fds_pipe1[0]);
-				close(pipex->fds_pipe1[1]);
-				close(pipex->fds_pipe2[0]);
-				close(pipex->fds_pipe2[1]);
-				execve(pipex->cmd_path, pipex->cmd, envp);
-			}
-			ok = 1;
-			ft_free_var(pipex->cmd_path, pipex->cmd);
-			close(pipex->fds_pipe1[0]);
-			close(pipex->fds_pipe1[1]);
-			if (fd_io[0] != 0)
-				close(fd_io[0]);
-			if (fd_io[1] != 0)
-				close(fd_io[1]);
-		}
-	}
-	else
-		perror("Error");
-	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
-}
-
-static void	odd_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
-{
-	pid_t	pid;
-	int		ok;
-
-	pid = 0;
-	ok = 0;
-	if (pipe(pipex->fds_pipe1) != -1)
-	{
-		pipex->cmd = cmds[pipex->index - 1];
-		if (check_cmd_pipex(pipex, envp) && fd_io[0] != -1)
-		{
-			pid = fork();
-			if (pid == -1)
-				perror("Error");
-			if (pid == 0)
-			{
-				if (fd_io[0] != 0)
-				{
-					dup2(fd_io[0], 0);
-					close(fd_io[0]);
-				}
-				else
-					dup2(pipex->fds_pipe2[0], 0);
-				if (fd_io[1] != 0)
-				{
-					dup2(fd_io[1], 1);
-					close(fd_io[1]);
-				}
-				else
-					dup2(pipex->fds_pipe1[1], 1);
-				close(pipex->fds_pipe1[0]);
-				close(pipex->fds_pipe1[1]);
-				close(pipex->fds_pipe2[0]);
-				close(pipex->fds_pipe2[1]);
-				execve(pipex->cmd_path, pipex->cmd, envp);
-			}
-			ok = 1;
-			ft_free_var(pipex->cmd_path, pipex->cmd);
-			close(pipex->fds_pipe2[0]);
-			close(pipex->fds_pipe2[1]);
-			if (fd_io[0] != 0)
-				close(fd_io[0]);
-			if (fd_io[1] != 0)
-				close(fd_io[1]);
-		}
-	}
-	else
-		perror("Error");
-	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
-}
-
-static void	last_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
-{
-	pid_t	pid;
-	int		ok;
-
-	pid = 0;
-	ok = 0;
-	pipex->cmd = cmds[pipex->nb_cmds - 1];
-	if (check_cmd_pipex(pipex, envp) && fd_io[0] != -1)
-	{
-		pid = fork();
-		if (pid == -1)
-			perror("Error");
-		if (pid == 0)
-		{
-			if (fd_io[0] != 0)
-			{
-				dup2(fd_io[0], 0);
-				close(fd_io[0]);
-			}
-			else
-			{
-				if (pipex->nb_cmds % 2 == 0)
-					dup2(pipex->fds_pipe1[0], 0);
-				else
-					dup2(pipex->fds_pipe2[0], 0);
-			}
-			if (fd_io[1] != 0)
-			{
-				dup2(fd_io[1], 1);
-				close(fd_io[1]);
-			}
-			if (pipex->nb_cmds % 2 == 0)
-			{
-				close(pipex->fds_pipe1[0]);
-				close(pipex->fds_pipe1[1]);
-			}
-			else
-			{
-				close(pipex->fds_pipe2[0]);
-				close(pipex->fds_pipe2[1]);
-			}
-			execve(pipex->cmd_path, pipex->cmd, envp);
-		}
-		ok = 1;
-		ft_free_var(pipex->cmd_path, pipex->cmd);
-		if (pipex->nb_cmds % 2 == 0)
-		{
-			close(pipex->fds_pipe1[0]);
-			close(pipex->fds_pipe1[1]);
-		}
-		else
-		{
-			close(pipex->fds_pipe2[0]);
-			close(pipex->fds_pipe2[1]);
-		}
-		if (fd_io[0] != 0)
-			close(fd_io[0]);
-		if (fd_io[1] != 0)
-			close(fd_io[1]);
-	}
-	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
-}
-
-void	ft_pipex(t_pipex *pipex, char ***cmds, char **envp, int *fd_ios[2])
+static void	ft_execute_waitpid(t_pipex *pipex)
 {
 	t_pid	*begin;
 
-	pipex->list = NULL;
-	first_cmd(pipex, cmds, envp, fd_ios[0]);
-	pipex->index = 2;
-	while (pipex->index < pipex->nb_cmds)
-	{
-		if (pipex->index % 2 == 0)
-			even_cmd(pipex, cmds, envp, fd_ios[pipex->index - 1]);
-		else
-			odd_cmd(pipex, cmds, envp, fd_ios[pipex->index - 1]);
-		pipex->index++;
-	}
-	last_cmd(pipex, cmds, envp, fd_ios[pipex->nb_cmds - 1]);
 	begin = pipex->list;
 	while (pipex->list)
 	{
@@ -254,4 +28,21 @@ void	ft_pipex(t_pipex *pipex, char ***cmds, char **envp, int *fd_ios[2])
 	}
 	pipex->list = begin;
 	ft_free_list_pipex(pipex->list);
+}
+
+void	ft_pipex(t_pipex *pipex, char ***cmds, char **envp, int *fd_ios[2])
+{
+	pipex->list = NULL;
+	first_cmd(pipex, cmds, envp, fd_ios[0]);
+	pipex->index = 2;
+	while (pipex->index < pipex->nb_cmds)
+	{
+		if (pipex->index % 2 == 0)
+			even_cmd(pipex, cmds, envp, fd_ios[pipex->index - 1]);
+		else
+			odd_cmd(pipex, cmds, envp, fd_ios[pipex->index - 1]);
+		pipex->index++;
+	}
+	last_cmd(pipex, cmds, envp, fd_ios[pipex->nb_cmds - 1]);
+	ft_execute_waitpid(pipex);
 }
