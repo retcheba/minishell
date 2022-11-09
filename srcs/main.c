@@ -12,10 +12,12 @@
 
 #include "minishell.h"
 
-static void	ft_init_minishell(char *username)
+static void	ft_init_minishell(void)
 {
-	printf("\033[H\033[2J");
-	printf("\033[1;96m-----------------------------------------");
+	char		*username;
+
+	username = getenv("USER");
+	printf("\033[H\033[2J\033[1;96m-----------------------------------------");
 	printf("\033[1;96m--------------------------\033[0m\n");
 	printf("\033[91m███╗   ███╗██╗███╗   ██╗██╗");
 	printf("███████╗██╗  ██╗███████╗██╗     ██╗     \n");
@@ -49,12 +51,10 @@ static void	ft_exit(t_struct *mini)
 int	main(int argc, char **argv, char **envp)
 {
 	t_struct	mini;
-	char		*username;
 
 	(void)argc;
 	(void)argv;
-	username = getenv("USER");
-	ft_init_minishell(username);
+	ft_init_minishell();
 	ft_init_env(&mini, envp);
 	ft_init_export(&mini, envp);
 	while (1 == 1)
@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **envp)
 		if (mini.buff[0] != 0)
 		{
 			parsing(&mini);
+			replace_env_equivalent(&mini);
 			ft_tag_word(&mini);
 			what_to_execute(&mini, envp);
 			if (mini.lst1->tag == EXIT)

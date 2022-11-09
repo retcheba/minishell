@@ -25,8 +25,6 @@ void	ft_tag_word(t_struct *mini)
 	ccopy = mini->lst1;
 	while (mini->lst1)
 	{
-//		if (ft_strnstr(mini->tab[i], "$", ft_strlen(mini->tab[i])) != NULL)
-//			mini->lst1->tag = PATH;
 		if (ft_strstr(mini->tab[i], "exit") && i == 0)
 			mini->lst1->tag = EXIT;
 		else if (ft_strstr(mini->tab[i], "|"))

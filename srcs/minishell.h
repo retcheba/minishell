@@ -64,6 +64,7 @@ typedef struct s_pipex
 }	t_pipex;
 
 //	MAIN FUNCTIONS
+void	replace_env_equivalent(t_struct *mini);
 void	ft_tag_word(t_struct *mini);
 void	what_to_execute(t_struct *mini, char **envp);
 char	*get_cmd_path(char *cmd, char **envp);
