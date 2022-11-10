@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 19:13:48 by retcheba          #+#    #+#             */
-/*   Updated: 2022/11/06 04:49:48 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:57:07 by subrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	ft_init_env(t_struct *mini, char **envp);
 void	print_env(t_list *env);
 void	ft_init_export(t_struct *mini, char **envp);
 void	print_export(t_list *export);
+void	check_export_args(t_struct *mini, t_list *next);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 

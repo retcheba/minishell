@@ -6,7 +6,7 @@
 /*   By: subrandt <subrandt@student.42angoulem      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 14:31:54 by subrandt          #+#    #+#             */
-/*   Updated: 2022/11/03 11:21:34 by subrandt         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:22:47 by subrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	print_my_export(char *s)
 	{
 		printf("declare -x ");
 		i = 0;
-		while (s[i] != '=')
+		while (s[i] && s[i] != '=')
 		{
 			printf("%c", s[i]);
 			i++;

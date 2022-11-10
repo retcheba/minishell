@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 11:42:47 by retcheba          #+#    #+#             */
-/*   Updated: 2022/11/06 04:02:21 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:57:46 by subrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_prepare_builtins(t_struct *mini, char **envp)
 			if (ft_strstr(mini->lst1->content, "env"))
 				print_env(mini->env);
 			if (ft_strstr(mini->lst1->content, "export"))
-				print_export(mini->export);
+				check_export_args(mini, mini->lst1->next);
 		}
 		mini->lst1 = mini->lst1->next;
 	}
