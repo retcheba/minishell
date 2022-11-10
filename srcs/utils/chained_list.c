@@ -63,3 +63,16 @@ void	ft_free_list(t_list *lst)
 		tmp = NULL;
 	}
 }
+
+t_list	*ft_listlast(t_list *lst, int i)
+{
+	if (lst)
+	{
+		while (lst->next && i > 0)
+		{
+			lst = lst->next;
+			i--;
+		}
+	}
+	return (lst);
+}

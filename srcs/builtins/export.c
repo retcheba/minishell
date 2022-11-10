@@ -51,20 +51,22 @@ static void	print_my_export(char *s)
 	while (s[i])
 	{
 		printf("declare -x ");
-		i = 0;
-		while (s[i] && s[i] != '=')
-		{
+		i = -1;
+		while (s[++i] && s[i] != '=')
 			printf("%c", s[i]);
-			i++;
-		}
-		printf("=\"");
-		i++;
-		while (s[i])
+		if (s[i] == '=')
 		{
-			printf("%c", s[i]);
+			printf("=\"");
 			i++;
+			while (s[i])
+			{
+				printf("%c", s[i]);
+				i++;
+			}
+			printf("\"\n");
 		}
-		printf("\"\n");
+		else
+			printf("\n");
 	}
 }
 
@@ -98,4 +100,5 @@ void	ft_init_export(t_struct *mini, char **envp)
 		i++;
 	}
 	ft_sort_ascii_export(mini->export);
+	mini->malloc_export = 0;
 }

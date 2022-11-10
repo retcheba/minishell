@@ -15,13 +15,32 @@
 //si export toto - ajout dans export
 //si export toto= ou toto=12  ajout dans export et env
 
+void	ft_free_list_export(t_struct *mini, t_list *export)
+{
+	t_list	*begin;
+
+	begin = export;
+	while (mini->malloc_export > 0)
+	{
+		export = ft_listlast(export, ft_lstsize(export) - mini->malloc_export);
+		printf("last=%s\n", (char *)export->content);
+		free(export->content);
+		export = begin;
+		mini->malloc_export--;
+	}
+	ft_free_list(export);
+}
+
 void	check_export_args(t_struct *mini, t_list *n)
 {
+	char	*content;
+
 	if (n == NULL)
-		print_export(mini->export);//print si export tout seul
-	else if (ft_strchr(n->content, '=') != NULL)
+		print_export(mini->export);
+	else
 	{
-		add_link_bottom(mini->export, new_link(n->content, 0));
-		printf("content : %s\n", (char *)n->content);
+		content = ft_strdup(n->content);
+		mini->malloc_export++;
+		mini->export = add_link_bottom(mini->export, new_link(content, 0));
 	}
 }

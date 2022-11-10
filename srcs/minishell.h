@@ -49,6 +49,7 @@ typedef struct s_struct
 	t_list	*lst1;
 	t_list	*env;
 	t_list	*export;
+	int		malloc_export;
 }	t_struct;
 
 typedef struct s_pipex
@@ -96,6 +97,7 @@ void	print_env(t_list *env);
 void	ft_init_export(t_struct *mini, char **envp);
 void	print_export(t_list *export);
 void	check_export_args(t_struct *mini, t_list *next);
+void	ft_free_list_export(t_struct *mini, t_list *export);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 
@@ -108,6 +110,7 @@ t_list	*new_link(void *content, int tag);
 t_list	*add_link_bottom(t_list *lst, t_list *new);
 t_list	*add_link_top(t_list *lst, void *content, int tag);
 void	ft_free_list(t_list *lst);
+t_list	*ft_listlast(t_list *lst, int i);
 
 //	UTILS FUNCTIONS
 int		ft_heredoc(char *stop);
