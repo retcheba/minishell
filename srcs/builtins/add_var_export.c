@@ -23,7 +23,6 @@ void	ft_free_list_export(t_struct *mini, t_list *export)
 	while (mini->malloc_export > 0)
 	{
 		export = ft_listlast(export, ft_lstsize(export) - mini->malloc_export);
-		printf("last=%s\n", (char *)export->content);
 		free(export->content);
 		export = begin;
 		mini->malloc_export--;
@@ -37,6 +36,13 @@ void	check_export_args(t_struct *mini, t_list *n)
 
 	if (n == NULL)
 		print_export(mini->export);
+	else if (ft_strchr((char *)n->content, '=') != NULL)
+	{
+		content = ft_strdup(n->content);
+		mini->malloc_export++;
+		mini->export = add_link_bottom(mini->export, new_link(content, 0));
+		mini->env = add_link_bottom(mini->env, new_link(content, 0));
+	}
 	else
 	{
 		content = ft_strdup(n->content);
