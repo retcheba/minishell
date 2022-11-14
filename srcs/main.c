@@ -44,7 +44,7 @@ static void	ft_exit(t_struct *mini)
 	ft_free_tab(mini->tab);
 	ft_free_list(mini->lst1);
 	ft_free_list(mini->env);
-	ft_free_list_export(mini, mini->export);
+	ft_free_list_export(mini);
 	exit(0);
 }
 

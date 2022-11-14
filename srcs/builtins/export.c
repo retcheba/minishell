@@ -36,10 +36,15 @@ static int	check_not_to_print(char *s)
 	int	i;
 
 	i = 0;
-	while (s[i] && s[i] != '_')
-		i++;
-	if (s[i] == '_' && s[i + 1] == '=')
-		return (1);
+	while (s[i])
+	{
+		if (s[i] == '_' && s[i + 1] == '=')
+			return (1);
+		while (s[i] && s[i] != ' ')
+			i++;
+		if (s[i] == ' ')
+			i++;
+	}
 	return (0);
 }
 
@@ -90,6 +95,7 @@ void	ft_init_export(t_struct *mini, char **envp)
 	int		i;
 
 	i = 0;
+	mini->free_list = NULL;
 	mini->export = NULL;
 	while (envp[i])
 	{
@@ -100,5 +106,4 @@ void	ft_init_export(t_struct *mini, char **envp)
 		i++;
 	}
 	ft_sort_ascii_export(mini->export);
-	mini->malloc_export = 0;
 }

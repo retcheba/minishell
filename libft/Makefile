@@ -52,7 +52,7 @@ SRCS		= ft_isalpha.c \
 	get_next_line/get_next_line.c \
 	get_next_line/get_next_line_utils.c
 OBJS		= ${SRCS:.c=.o}
-CC			= gcc
+CC			= clang
 CFLAGS		= -Wall -Wextra -Werror
 NAME		= libft.a
 RM			= rm -f

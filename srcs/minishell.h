@@ -49,7 +49,7 @@ typedef struct s_struct
 	t_list	*lst1;
 	t_list	*env;
 	t_list	*export;
-	int		malloc_export;
+	t_list	*free_list;
 }	t_struct;
 
 typedef struct s_pipex
@@ -97,7 +97,7 @@ void	print_env(t_list *env);
 void	ft_init_export(t_struct *mini, char **envp);
 void	print_export(t_list *export);
 void	check_export_args(t_struct *mini, t_list *next);
-void	ft_free_list_export(t_struct *mini, t_list *export);
+void	ft_free_list_export(t_struct *mini);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 
