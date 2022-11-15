@@ -37,14 +37,29 @@ static void	ft_init_minishell(void)
 	printf("\nWelcome %s\n", username);
 }
 
+static void	ft_free_list_free_list(t_struct *mini)
+{
+	t_list	*begin;
+
+	begin = mini->free_list;
+	while (mini->free_list)
+	{
+		free(mini->free_list->content);
+		mini->free_list = mini->free_list->next;
+	}
+	mini->free_list = begin;
+	ft_free_list(mini->free_list);
+}
+
 static void	ft_exit(t_struct *mini)
 {
 	printf ("exit\n");
 	free(mini->buff);
 	ft_free_tab(mini->tab);
 	ft_free_list(mini->lst1);
+	ft_free_list_free_list(mini);
 	ft_free_list(mini->env);
-	ft_free_list_export(mini);
+	ft_free_list(mini->export);
 	exit(0);
 }
 

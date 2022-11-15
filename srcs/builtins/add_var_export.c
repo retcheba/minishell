@@ -15,36 +15,52 @@
 //si export toto - ajout dans export
 //si export toto= ou toto=12  ajout dans export et env
 
-static int	is_only_alpha(char *s)
+static char	*attach_end(t_struct *mini, t_list *envp, char *content, char *cast)
 {
-	int	i;
+	char			*result;
+	char			*tmp;
+	unsigned int	start;
 
-	i = 0;
-	while (s[i] && s[i] != '=')
+	start = 0;
+	while (cast[start] && cast[start] != '=')
+		start++;
+	if (!cast[start])
 	{
-		if (!(s[i] >= 'A' && s[i] <= 'Z') && !(s[i] >= 'a' && s[i] <= 'z'))
-			return (1);
-		i++;
+		start++;
+		tmp = ft_strjoin(envp->content, "=");
+		mini->free_list = add_link_bottom(mini->free_list, new_link(tmp, 0));
+		envp->content = tmp;
 	}
-	return (0);
+	start = 0;
+	while (content[start] != '=' && content[start])
+		start++;
+	tmp = ft_substr(content, (start + 1), ft_strlen(content) - (start + 1));
+	mini->free_list = add_link_bottom(mini->free_list, new_link(tmp, 0));
+	result = ft_strjoin(envp->content, tmp);
+	mini->free_list = add_link_bottom(mini->free_list, new_link(result, 0));
+	return (result);
 }
 
-void	ft_free_list_export(t_struct *mini)
+static char	*new_content_attach(t_struct *mini, char *content)
 {
-	t_list	*begin;
+	char	*result;
+	char	*begin;
+	char	*end;
+	size_t	split;
 
-	begin = mini->free_list;
-	while (mini->free_list)
-	{
-		free(mini->free_list->content);
-		mini->free_list = mini->free_list->next;
-	}
-	mini->free_list = begin;
-	ft_free_list(mini->free_list);
-	ft_free_list(mini->export);
+	split = 0;
+	while (content[split] != '+' && content[split])
+		split++;
+	begin = ft_substr(content, 0, split);
+	mini->free_list = add_link_bottom(mini->free_list, new_link(begin, 0));
+	end = ft_substr(content, (split + 1), (ft_strlen(content) - (split + 1)));
+	mini->free_list = add_link_bottom(mini->free_list, new_link(end, 0));
+	result = ft_strjoin(begin, end);
+	mini->free_list = add_link_bottom(mini->free_list, new_link(result, 0));
+	return (result);
 }
 
-static int	search_in_envp(t_list *envp, char *content)
+static int	search_in_envp(t_struct *mini, t_list *envp, char *content)
 {
 	int		i;
 	char	*cast;
@@ -53,40 +69,47 @@ static int	search_in_envp(t_list *envp, char *content)
 	{
 		cast = (char *)envp->content;
 		i = 0;
-		while (content[i] && content[i] != '='
+		while (content[i] && content[i] != '=' && content[i] != '+'
 			&& cast[i] && cast[i] != '=' && content[i] == cast[i])
 			i++;
 		if ((content[i] == '=' && cast[i] == '\0')
-			|| (content[i] == '=' && cast[i] == '='))
+			|| (content[i] == '=' && cast[i] == '=')
+			|| (content[i] == '+' && cast[i] == '\0')
+			|| (content[i] == '+' && cast[i] == '=')
+			|| (content[i] == '\0' && cast[i] == '='))
 		{
-			envp->content = content;
+			if (content[i] == '+')
+				envp->content = attach_end(mini, envp, content, cast);
+			else if (content[i] != '\0')
+				envp->content = content;
 			return (0);
 		}
-		else if (cast[i] == '=' && content[i] == '\0')
-			return (0);
 		envp = envp->next;
 	}
 	return (1);
 }
 
-static void	put_in_envp(t_struct *mini, char *cast, char *content)
+static void	put_in_envp(t_struct *mini, char *content)
 {
-	content = ft_strdup(cast);
-	if (mini->free_list == NULL)
-		mini->free_list = new_link(content, 0);
-	else
-		mini->free_list = add_link_bottom(mini->free_list, \
-			new_link(content, 0));
-	if (ft_strchr(content, '=') != NULL)
+	if (ft_strnstr(content, "+=", ft_strlen(content)))
 	{
-		if (search_in_envp(mini->export, content))
+		if (search_in_envp(mini, mini->export, content))
+			mini->export = add_link_bottom(mini->export, \
+				new_link(new_content_attach(mini, content), 0));
+		if (search_in_envp(mini, mini->env, content))
+			mini->env = add_link_bottom(mini->env, \
+				new_link(new_content_attach(mini, content), 0));
+	}
+	else if (ft_strchr(content, '=') != NULL)
+	{
+		if (search_in_envp(mini, mini->export, content))
 			mini->export = add_link_bottom(mini->export, new_link(content, 0));
-		if (search_in_envp(mini->env, content))
+		if (search_in_envp(mini, mini->env, content))
 			mini->env = add_link_bottom(mini->env, new_link(content, 0));
 	}
 	else
 	{
-		if (search_in_envp(mini->export, content))
+		if (search_in_envp(mini, mini->export, content))
 			mini->export = add_link_bottom(mini->export, new_link(content, 0));
 	}
 }
@@ -96,8 +119,6 @@ void	check_export_args(t_struct *mini, t_list *n)
 	char	*content;
 	char	*cast;
 
-	content = NULL;
-	cast = NULL;
 	if (n == NULL)
 		print_export(mini->export);
 	while (n != NULL)
@@ -105,14 +126,18 @@ void	check_export_args(t_struct *mini, t_list *n)
 		cast = (char *)n->content;
 		if (!(cast[0] == '_' && cast[1] == '='))
 		{
-			if (cast[0] == '=' || is_only_alpha(cast))
-			{
-				write(2, "export: \'", 9);
-				write(2, cast, ft_strlen(cast));
-				write(2, "\' : not a valid identifier\n", 27);
-			}
+			if (is_only_alpha(cast))
+				ft_print_error(cast);
 			else
-				put_in_envp(mini, cast, content);
+			{
+				content = ft_strdup(cast);
+				if (mini->free_list == NULL)
+					mini->free_list = new_link(content, 0);
+				else
+					mini->free_list = add_link_bottom(mini->free_list, \
+						new_link(content, 0));
+				put_in_envp(mini, content);
+			}
 		}
 		n = n->next;
 	}

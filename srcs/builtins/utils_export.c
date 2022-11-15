@@ -30,3 +30,26 @@ void	ft_swap_content(t_list **list)
 	(*list)->content = (*list)->next->content;
 	(*list)->next->content = swap;
 }
+
+int	is_only_alpha(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && s[i] != '=' && (s[i] != '+' && s[i + 1] != '='))
+	{
+		if (!(s[i] >= 'A' && s[i] <= 'Z') && !(s[i] >= 'a' && s[i] <= 'z'))
+			return (1);
+		i++;
+	}
+	if (i == 0)
+		return (1);
+	return (0);
+}
+
+void	ft_print_error(char *cast)
+{
+	write(2, "export: \'", 9);
+	write(2, cast, ft_strlen(cast));
+	write(2, "\' : not a valid identifier\n", 27);
+}

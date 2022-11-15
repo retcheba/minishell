@@ -84,22 +84,27 @@ void	odd_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2]);
 void	last_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2]);
 int		check_cmd_pipex(t_pipex *pipex, char **envp);
 void	ft_free_var(char *cmd_path, char **cmd);
+void	ft_free_list_pipex(t_pid *list);
 t_pid	*new_link_pipex(pid_t pid, int ok);
 t_pid	*add_link_bottom_pipex(t_pid *list, t_pid *new);
 t_pid	*add_link_top_pipex(t_pid *list, pid_t pid, int ok);
-void	ft_free_list_pipex(t_pid *list);
 
 //	BUILTINS FUNCTIONS
 void	ft_prepare_builtins(t_struct *mini, char **envp);
+//pwd
 void	ft_pwd(void);
+//env
 void	ft_init_env(t_struct *mini, char **envp);
 void	print_env(t_list *env);
+//export
 void	ft_init_export(t_struct *mini, char **envp);
 void	print_export(t_list *export);
 void	check_export_args(t_struct *mini, t_list *next);
-void	ft_free_list_export(t_struct *mini);
+//utils export
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
+int		is_only_alpha(char *s);
+void	ft_print_error(char *cast);
 
 //	SIMPLE CMD FUNCTIONS
 int		ft_prepare_simple_cmd(t_struct *mini, char **envp);
