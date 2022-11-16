@@ -52,11 +52,13 @@ static char	*new_content_attach(t_struct *mini, char *content)
 	while (content[split] != '+' && content[split])
 		split++;
 	begin = ft_substr(content, 0, split);
-	mini->free_list = add_link_bottom(mini->free_list, new_link(begin, 0));
 	end = ft_substr(content, (split + 1), (ft_strlen(content) - (split + 1)));
-	mini->free_list = add_link_bottom(mini->free_list, new_link(end, 0));
 	result = ft_strjoin(begin, end);
 	mini->free_list = add_link_bottom(mini->free_list, new_link(result, 0));
+	free(begin);
+	begin = NULL;
+	free(end);
+	end = NULL;
 	return (result);
 }
 
