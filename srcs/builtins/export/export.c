@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 //sorts the list  according to ascii-order
 static void	ft_sort_ascii_export(t_list *export)

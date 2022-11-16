@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 //Print the absolute pathname of the current working directory.
 //PATH_MAX = 4096 (limits.h)

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 //si export toto - ajout dans export
 //si export toto= ou toto=12  ajout dans export et env

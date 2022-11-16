@@ -1,6 +1,7 @@
 SRCS		= main.c replace_env_equivalent.c ft_tag_word.c what_to_execute.c get_cmd_path.c \
 				parsing/parsing.c parsing/ft_split_minishell.c \
-				builtins/ft_prepare_builtins.c builtins/pwd.c builtins/env.c builtins/export.c builtins/utils_export.c builtins/add_var_export.c \
+				builtins/ft_prepare_builtins.c builtins/pwd/pwd.c builtins/env/env.c builtins/unset/unset.c\
+				builtins/export/export.c builtins/export/utils_export.c builtins/export/check_export_args.c \
 				simple_cmd/simple_cmd.c simple_cmd/ft_prepare_simple_cmd.c \
 				pipex/prepare_pipex.c pipex/ft_prepare_one_cmd.c pipex/pipex.c pipex/first_cmd.c pipex/even_cmd.c pipex/odd_cmd.c pipex/last_cmd.c \
 				pipex/pipex_error.c pipex/pipex_utils.c pipex/chained_list_pipex.c \

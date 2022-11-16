@@ -105,6 +105,8 @@ int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 int		is_only_alpha(char *s);
 void	ft_print_error(char *cast);
+//unset
+void	ft_unset(t_struct *mini, t_list *n);
 
 //	SIMPLE CMD FUNCTIONS
 int		ft_prepare_simple_cmd(t_struct *mini, char **envp);

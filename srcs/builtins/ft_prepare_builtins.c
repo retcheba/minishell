@@ -28,6 +28,8 @@ void	ft_prepare_builtins(t_struct *mini, char **envp)
 				print_env(mini->env);
 			if (ft_strstr(mini->lst1->content, "export"))
 				check_export_args(mini, mini->lst1->next);
+			if (ft_strstr(mini->lst1->content, "unset"))
+				ft_unset(mini, mini->lst1->next);
 		}
 		mini->lst1 = mini->lst1->next;
 	}
