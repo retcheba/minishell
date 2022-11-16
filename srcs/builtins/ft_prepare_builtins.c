@@ -12,11 +12,10 @@
 
 #include "../minishell.h"
 
-void	ft_prepare_builtins(t_struct *mini, char **envp)
+void	ft_prepare_builtins(t_struct *mini)
 {
 	t_list	*begin;
 
-	(void)envp;
 	begin = mini->lst1;
 	while (mini->lst1)
 	{

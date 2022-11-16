@@ -46,6 +46,7 @@ typedef struct s_struct
 {
 	char	*buff;
 	char	**tab;
+	char	**envp;
 	t_list	*lst1;
 	t_list	*env;
 	t_list	*export;
@@ -65,7 +66,7 @@ typedef struct s_pipex
 }	t_pipex;
 
 //	MAIN FUNCTIONS
-void	replace_env_equivalent(t_struct *mini);
+void	replace_env_equivalent(t_struct *mini, char **envp);
 void	ft_tag_word(t_struct *mini);
 void	what_to_execute(t_struct *mini, char **envp);
 char	*get_cmd_path(char *cmd, char **envp);
@@ -90,7 +91,7 @@ t_pid	*add_link_bottom_pipex(t_pid *list, t_pid *new);
 t_pid	*add_link_top_pipex(t_pid *list, pid_t pid, int ok);
 
 //	BUILTINS FUNCTIONS
-void	ft_prepare_builtins(t_struct *mini, char **envp);
+void	ft_prepare_builtins(t_struct *mini);
 //pwd
 void	ft_pwd(void);
 //env
@@ -125,5 +126,6 @@ void	ft_free_tab(char **tab);
 int		ft_strstr(char *str, char *to_find);
 int		check_redir_out(t_struct *mini);
 int		check_redir_in(t_struct *mini);
+char	**ft_envp(t_struct *mini);
 
 #endif

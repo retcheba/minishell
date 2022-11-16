@@ -12,7 +12,32 @@
 
 #include "minishell.h"
 
-static char	*ft_lil(char *str)
+static char	*ft_getenv(t_struct *mini, char *str, char **envp)
+{
+	unsigned int	i;
+	unsigned int	j;
+	char			*result;
+
+	result = NULL;
+	i = 0;
+	while (envp[i])
+	{
+		j = 0;
+		while (str[j] == envp[i][j] && str[j] && envp[i][j] != '=')
+			j++;
+		if (str[j] == '\0' && envp[i][j] == '=')
+		{
+			j++;
+			result = ft_substr(envp[i], j, (ft_strlen(envp[i]) - j));
+			mini->free_list = add_link_bottom(mini->free_list, \
+				new_link(result, 0));
+		}
+		i++;
+	}
+	return (result);
+}
+
+static char	*ft_lil(t_struct *mini, char *str, char **envp)
 {
 	char	*equivalent;
 	char	*result;
@@ -26,7 +51,7 @@ static char	*ft_lil(char *str)
 	i = 0;
 	while (tab[i])
 	{
-		equivalent = getenv(tab[i]);
+		equivalent = ft_getenv(mini, tab[i], envp);
 		if (equivalent != NULL)
 		{
 			tmp = result;
@@ -39,7 +64,7 @@ static char	*ft_lil(char *str)
 	return (result);
 }
 
-static char	*ft_lol(char *str)
+static char	*ft_lol(t_struct *mini, char *str, char **envp)
 {
 	char	*equivalent;
 	char	*result;
@@ -52,7 +77,7 @@ static char	*ft_lol(char *str)
 	i = 0;
 	while (tab[i])
 	{
-		equivalent = getenv(tab[i]);
+		equivalent = ft_getenv(mini, tab[i], envp);
 		if (equivalent != NULL)
 		{
 			tmp = result;
@@ -65,7 +90,7 @@ static char	*ft_lol(char *str)
 	return (result);
 }
 
-void	replace_env_equivalent(t_struct *mini)
+void	replace_env_equivalent(t_struct *mini, char **envp)
 {
 	t_list	*begin;
 	char	*result;
@@ -80,9 +105,9 @@ void	replace_env_equivalent(t_struct *mini)
 		if (ft_strchr(mini->tab[i], '$'))
 		{
 			if (mini->tab[i][0] == '$')
-				result = ft_lil(mini->tab[i]);
+				result = ft_lil(mini, mini->tab[i], envp);
 			else
-				result = ft_lol(mini->tab[i]);
+				result = ft_lol(mini, mini->tab[i], envp);
 			tmp = mini->tab[i];
 			mini->tab[i] = result;
 			free(tmp);

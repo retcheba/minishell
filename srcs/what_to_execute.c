@@ -43,7 +43,7 @@ void	what_to_execute(t_struct *mini, char **envp)
 	if (pipex > 0)
 		ft_prepare_pipex(mini, envp);
 	else if (builtin > 0)
-		ft_prepare_builtins(mini, envp);
+		ft_prepare_builtins(mini);
 	else if (cmd > 0)
 		ft_prepare_simple_cmd(mini, envp);
 	else
