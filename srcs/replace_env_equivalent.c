@@ -29,8 +29,11 @@ static char	*ft_getenv(t_struct *mini, char *str, char **envp)
 		{
 			j++;
 			result = ft_substr(envp[i], j, (ft_strlen(envp[i]) - j));
-			mini->free_list = add_link_bottom(mini->free_list, \
-				new_link(result, 0));
+			if (mini->free_list == NULL)
+				mini->free_list = new_link(result, 0);
+			else
+				mini->free_list = add_link_bottom(mini->free_list, \
+					new_link(result, 0));
 		}
 		i++;
 	}

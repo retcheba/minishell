@@ -51,7 +51,8 @@ int	check_redir_in(t_struct *mini)
 	begin = mini->lst1;
 	while (mini->lst1 && mini->lst1->tag != PIPE)
 	{
-		if (mini->lst1->tag == REDIR_IN && mini->lst1->next->tag == FILE)
+		if (mini->lst1->tag == REDIR_IN && mini->lst1->next
+			&& mini->lst1->next->tag == FILE)
 		{
 			fd_in = open(mini->lst1->next->content, O_RDONLY);
 			if (fd_in == -1)
@@ -72,7 +73,7 @@ int	check_redir_out(t_struct *mini)
 
 	fd_out = 0;
 	begin = mini->lst1;
-	while (mini->lst1 && mini->lst1->tag != PIPE)
+	while (mini->lst1 && mini->lst1->next && mini->lst1->tag != PIPE)
 	{
 		if (mini->lst1->tag == REDIR_OUT && mini->lst1->next->tag == FILE)
 		{

@@ -12,11 +12,8 @@
 
 #include "minishell.h"
 
-static void	ft_init_minishell(void)
+static void	ft_init_minishell(t_struct *mini, char **envp)
 {
-	char		*username;
-
-	username = getenv("USER");
 	printf("\033[H\033[2J\033[1;96m-----------------------------------------");
 	printf("\033[1;96m--------------------------\033[0m\n");
 	printf("\033[91m███╗   ███╗██╗███╗   ██╗██╗");
@@ -33,8 +30,10 @@ static void	ft_init_minishell(void)
 	printf("╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\033[0m\n");
 	printf("\033[1;96mMade by: subrandt & retcheba\033[0m\n");
 	printf("\033[1;96m-----------------------------------------");
-	printf("\033[1;96m--------------------------\033[0m\n");
-	printf("\nWelcome %s\n", username);
+	printf("\033[1;96m--------------------------\033[0m\n\n");
+	ft_init_env(mini, envp);
+	ft_init_export(mini, envp);
+	mini->envp = NULL;
 }
 
 static void	ft_free_the_free_list(t_struct *mini)
@@ -60,6 +59,8 @@ static void	ft_exit(t_struct *mini)
 	ft_free_the_free_list(mini);
 	ft_free_list(mini->env);
 	ft_free_list(mini->export);
+	if (mini->envp != NULL)
+		ft_free_tab(mini->envp);
 	exit(0);
 }
 
@@ -69,9 +70,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	ft_init_minishell();
-	ft_init_env(&mini, envp);
-	ft_init_export(&mini, envp);
+	ft_init_minishell(&mini, envp);
 	while (1 == 1)
 	{
 		mini.buff = readline("\033[1;91mminishell\033[0m  ");

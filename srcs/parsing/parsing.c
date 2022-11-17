@@ -6,7 +6,7 @@
 /*   By: retcheba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 16:11:21 by retcheba          #+#    #+#             */
-/*   Updated: 2022/10/26 16:11:25 by retcheba         ###   ########.fr       */
+/*   Updated: 2022/11/17 01:56:10 by retcheba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 			else
 				mini->free_list = add_link_bottom(mini->free_list, \
 					new_link(result, 0));
+			str = result;
 		}
 		split++;
 	}

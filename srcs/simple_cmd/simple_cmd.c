@@ -45,8 +45,7 @@ static void	ft_free_cmd(char *cmd_path, char **cmd)
 		cmd[i] = NULL;
 		i++;
 	}
-	if (cmd)
-		free(cmd);
+	free(cmd);
 	cmd = NULL;
 }
 
