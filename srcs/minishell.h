@@ -74,6 +74,7 @@ char	*get_cmd_path(char *cmd, char **envp);
 //	PARSING FUNCTIONS
 void	parsing(t_struct *mini);
 char	**ft_split_minishell(char const *s, char c);
+char	*ft_substr_minishell(char const *s, unsigned int start, size_t len);
 
 //	PIPEX FUNCTIONS
 void	ft_prepare_pipex(t_struct *mini, char **envp);

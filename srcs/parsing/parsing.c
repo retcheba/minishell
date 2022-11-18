@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static char	*ft_separate_str(char *str, size_t split)
+static char	*ft_separate_str(t_struct *mini, char *str, size_t split)
 {
 	char	*result;
 	char	*tmp;
@@ -23,6 +23,11 @@ static char	*ft_separate_str(char *str, size_t split)
 	begin = ft_strjoin(tmp, " ");
 	end = ft_substr(str, split, (ft_strlen(str) - split));
 	result = ft_strjoin(begin, end);
+	if (mini->free_list == NULL)
+		mini->free_list = new_link(result, 0);
+	else
+		mini->free_list = add_link_bottom(mini->free_list, \
+			new_link(result, 0));
 	free(tmp);
 	tmp = NULL;
 	free(begin);
@@ -34,31 +39,28 @@ static char	*ft_separate_str(char *str, size_t split)
 
 static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 {
-	char	*result;
 	size_t	split;
 
 	split = 0;
-	result = NULL;
 	while (str[split])
 	{
-		if ((str[split] == '|' || str[split] == '>' || str[split] == '<')
+		if (str[split] != ' ' && str[split] != '>' && str[split] != '<'
+			&& (str[split + 1] == '|' || str[split + 1] == '>'
+				|| str[split + 1] == '<'))
+		{
+			split++;
+			str = ft_separate_str(mini, str, split);
+		}
+		else if ((str[split] == '|' || str[split] == '>' || str[split] == '<')
 			&& str[split + 1] != ' ' && str[split + 1] != '>'
 			&& str[split + 1] != '<' && str[split + 1] != '\0')
 		{
 			split++;
-			result = ft_separate_str(str, split);
-			if (mini->free_list == NULL)
-				mini->free_list = new_link(result, 0);
-			else
-				mini->free_list = add_link_bottom(mini->free_list, \
-					new_link(result, 0));
-			str = result;
+			str = ft_separate_str(mini, str, (split));
 		}
 		split++;
 	}
-	if (result != NULL)
-		return (result);
-	return (mini->buff);
+	return (str);
 }
 
 void	parsing(t_struct *mini)

@@ -99,7 +99,7 @@ static char	**fill_tab(const char *s, char c, char **str)
 		len = ft_len_word(s, c, i, len);
 		if (len > 0)
 		{
-			str[cmp] = ft_substr(s, i, len);
+			str[cmp] = ft_substr_minishell(s, i, len);
 			cmp++;
 		}
 		i += len;

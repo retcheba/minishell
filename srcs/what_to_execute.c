@@ -39,13 +39,16 @@ void	what_to_execute(t_struct *mini, char **envp)
 	pipex = 0;
 	builtin = 0;
 	cmd = 0;
-	check_what(mini, &pipex, &builtin, &cmd);
-	if (pipex > 0)
-		ft_prepare_pipex(mini, envp);
-	else if (builtin > 0)
-		ft_prepare_builtins(mini);
-	else if (cmd > 0)
-		ft_prepare_simple_cmd(mini, envp);
-	else
-		check_redir_in(mini);
+	if (1 == 1)
+	{
+		check_what(mini, &pipex, &builtin, &cmd);
+		if (pipex > 0)
+			ft_prepare_pipex(mini, envp);
+		else if (builtin > 0)
+			ft_prepare_builtins(mini);
+		else if (cmd > 0)
+			ft_prepare_simple_cmd(mini, envp);
+		else
+			check_redir_in(mini);
+	}
 }
