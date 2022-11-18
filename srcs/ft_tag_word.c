@@ -56,7 +56,8 @@ static int	is_second_tags(t_struct *mini, t_list *copy, t_list *ccopy, int i)
 		else
 			mini->lst1->tag = CMD;
 	}
-	else if (ccopy->tag == REDIR_IN || ccopy->tag == DREDIR_IN)
+	else if (ccopy->tag == REDIR_IN || ccopy->tag == DREDIR_IN
+		|| ccopy->tag == REDIR_OUT || ccopy->tag == DREDIR_OUT)
 	{
 		if (is_builtin(mini->tab[i]))
 			mini->lst1->tag = BUILTIN;

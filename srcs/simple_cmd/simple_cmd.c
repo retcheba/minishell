@@ -62,7 +62,6 @@ static int	check_cmd(char **cmd, char **cmd_path, char **envp)
 	{
 		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, ": command not found\n", 20);
-		ft_free_cmd(*cmd_path, cmd);
 		return (0);
 	}
 	return (1);
@@ -98,7 +97,6 @@ void	simple_cmd(char **cmd, char **envp, int fd_io[2])
 				perror("Error");
 			else if (pid == 0)
 				child(envp, cmd, cmd_path, fd_io);
-			ft_free_cmd(cmd_path, cmd);
 			if (fd_io[0] != 0)
 				close(fd_io[0]);
 			if (fd_io[1] != 0)
@@ -106,4 +104,5 @@ void	simple_cmd(char **cmd, char **envp, int fd_io[2])
 			waitpid(pid, NULL, 0);
 		}
 	}
+	ft_free_cmd(cmd_path, cmd);
 }

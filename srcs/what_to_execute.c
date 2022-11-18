@@ -12,6 +12,33 @@
 
 #include "minishell.h"
 
+static int	is_syntax_error(t_struct *mini)
+{
+	int		error;
+	t_list	*begin;
+
+	error = 0;
+	begin = mini->lst1;
+	if (mini->lst1->tag == PIPE)
+	{
+		write(2, "syntax error near unexpected token `|'\n", 39);
+		error = 1;
+	}
+	while (mini->lst1)
+	{
+		if ((mini->lst1->tag == PIPE || mini->lst1->tag == REDIR_IN
+				|| mini->lst1->tag == DREDIR_IN || mini->lst1->tag == REDIR_OUT
+				|| mini->lst1->tag == DREDIR_OUT) && mini->lst1->next == NULL)
+		{
+			write(2, "syntax error near unexpected token `newline'\n", 45);
+			error = 1;
+		}
+		mini->lst1 = mini->lst1->next;
+	}
+	mini->lst1 = begin;
+	return (error);
+}
+
 static void	check_what(t_struct *mini, int	*pipex, int	*builtin, int *cmd)
 {
 	t_list	*begin;
@@ -39,7 +66,7 @@ void	what_to_execute(t_struct *mini, char **envp)
 	pipex = 0;
 	builtin = 0;
 	cmd = 0;
-	if (1 == 1)
+	if (!(is_syntax_error(mini)))
 	{
 		check_what(mini, &pipex, &builtin, &cmd);
 		if (pipex > 0)
@@ -49,6 +76,9 @@ void	what_to_execute(t_struct *mini, char **envp)
 		else if (cmd > 0)
 			ft_prepare_simple_cmd(mini, envp);
 		else
+		{
 			check_redir_in(mini);
+			check_redir_out(mini);
+		}
 	}
 }
