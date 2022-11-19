@@ -21,6 +21,8 @@
 # include <sys/wait.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <sys/ioctl.h>
 
 # define EXIT 0
 # define CMD 1
@@ -70,6 +72,7 @@ void	replace_env_equivalent(t_struct *mini, char **envp);
 void	ft_tag_word(t_struct *mini);
 void	what_to_execute(t_struct *mini, char **envp);
 char	*get_cmd_path(char *cmd, char **envp);
+void	sig_handler(int sig);
 
 //	PARSING FUNCTIONS
 void	parsing(t_struct *mini);

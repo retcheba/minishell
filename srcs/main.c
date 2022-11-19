@@ -34,6 +34,9 @@ static void	ft_init_minishell(t_struct *mini, char **envp)
 	ft_init_env(mini, envp);
 	ft_init_export(mini, envp);
 	mini->envp = NULL;
+	signal(SIGINT, sig_handler);
+	signal(SIGSEGV, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 static void	ft_free_the_free_list(t_struct *mini)

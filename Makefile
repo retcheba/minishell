@@ -1,4 +1,4 @@
-SRCS		= main.c replace_env_equivalent.c ft_tag_word.c what_to_execute.c get_cmd_path.c \
+SRCS		= main.c replace_env_equivalent.c ft_tag_word.c what_to_execute.c get_cmd_path.c signal.c \
 				parsing/parsing.c parsing/ft_split_minishell.c parsing/ft_substr_minishell.c\
 				builtins/ft_prepare_builtins.c builtins/pwd/pwd.c builtins/env/env.c builtins/unset/unset.c\
 				builtins/export/export.c builtins/export/utils_export.c builtins/export/check_export_args.c \
