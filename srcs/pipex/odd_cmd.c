@@ -65,6 +65,7 @@ void	odd_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
 			ok = 1;
 			ft_free_var(pipex->cmd_path, pipex->cmd);
 			ft_close_fds(pipex, fd_io);
+			g_status = 0;
 		}
 	}
 	else

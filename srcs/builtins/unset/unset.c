@@ -94,4 +94,5 @@ void	ft_unset(t_struct *mini, t_list *n)
 		ft_remove_in_env(mini, unset);
 		n = n->next;
 	}
+	g_status = 0;
 }

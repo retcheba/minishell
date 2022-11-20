@@ -81,4 +81,6 @@ void	what_to_execute(t_struct *mini, char **envp)
 			check_redir_out(mini);
 		}
 	}
+	else
+		g_status = 2;
 }

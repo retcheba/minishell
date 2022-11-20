@@ -20,4 +20,5 @@ void	ft_pwd(void)
 
 	pwd = getcwd(NULL, PATH_MAX);
 	printf("%s\n", pwd);
+	g_status = 0;
 }

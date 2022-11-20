@@ -56,7 +56,10 @@ int	check_redir_in(t_struct *mini)
 		{
 			fd_in = open(mini->lst1->next->content, O_RDONLY);
 			if (fd_in == -1)
+			{
 				perror("Error");
+				g_status = 1;
+			}
 		}
 		if (mini->lst1->tag == DREDIR_IN && mini->lst1->next->tag == FILE)
 			fd_in = ft_heredoc(mini->lst1->next->content);

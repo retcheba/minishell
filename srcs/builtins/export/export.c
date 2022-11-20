@@ -87,6 +87,7 @@ void	print_export(t_list *export)
 			print_my_export(tmp->content);
 		tmp = tmp->next;
 	}
+	g_status = 0;
 }
 
 //creates list export, sorted by ascii-order

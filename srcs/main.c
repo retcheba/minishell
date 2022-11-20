@@ -37,6 +37,7 @@ static void	ft_init_minishell(t_struct *mini, char **envp)
 	signal(SIGINT, sig_handler);
 	signal(SIGSEGV, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
+	g_status = 0;
 }
 
 static void	ft_free_the_free_list(t_struct *mini)
@@ -64,7 +65,36 @@ static void	ft_exit(t_struct *mini)
 	ft_free_list(mini->export);
 	if (mini->envp != NULL)
 		ft_free_tab(mini->envp);
-	exit(0);
+	exit(g_status);
+}
+
+static int	check_exit_args(t_struct *mini)
+{
+	if (mini->lst1->next == NULL)
+		return (1);
+	else if (is_numeric(mini->lst1->next->content))
+	{
+		if (mini->lst1->next->next != NULL)
+		{
+			write(2, "exit: too many arguments\n", 25);
+			g_status = 1;
+		}
+		else
+		{
+			g_status = get_status(ft_atoi(mini->lst1->next->content));
+			return (1);
+		}
+	}
+	else
+	{
+		write(2, "exit: ", 6);
+		write(2, mini->lst1->next->content, \
+			ft_strlen(mini->lst1->next->content));
+		write(2, ": numeric argument required\n", 28);
+		g_status = 2;
+		return (1);
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -80,12 +110,11 @@ int	main(int argc, char **argv, char **envp)
 		add_history(mini.buff);
 		if (mini.buff[0] != 0)
 		{
-			parsing(&mini);
 			mini.envp = ft_envp(&mini);
-			replace_env_equivalent(&mini, mini.envp);
+			parsing(&mini, mini.envp);
 			ft_tag_word(&mini);
 			what_to_execute(&mini, mini.envp);
-			if (mini.lst1->tag == EXIT)
+			if (mini.lst1->tag == EXIT && check_exit_args(&mini))
 				ft_exit(&mini);
 			ft_free_tab(mini.tab);
 			ft_free_list(mini.lst1);

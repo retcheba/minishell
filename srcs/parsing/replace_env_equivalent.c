@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static char	*ft_getenv(t_struct *mini, char *str, char **envp)
 {
@@ -40,6 +40,30 @@ static char	*ft_getenv(t_struct *mini, char *str, char **envp)
 	return (result);
 }
 
+static char	*ft_get_status(t_struct *mini, char *str)
+{
+	char	*result;
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = ft_itoa(g_status);
+	if (str[1] != '\0')
+	{
+		tmp2 = ft_substr(str, 1, (ft_strlen(str) - 1));
+		result = ft_strjoin(tmp1, tmp2);
+		free(tmp1);
+		free(tmp2);
+	}
+	else
+		result = tmp1;
+	if (mini->free_list == NULL)
+		mini->free_list = new_link(result, 0);
+	else
+		mini->free_list = add_link_bottom(mini->free_list, \
+			new_link(result, 0));
+	return (result);
+}
+
 static char	*ft_lil(t_struct *mini, char *str, char **envp)
 {
 	char	*equivalent;
@@ -49,75 +73,77 @@ static char	*ft_lil(t_struct *mini, char *str, char **envp)
 	int		i;
 
 	tab = ft_split(str, '$');
-	result = malloc(sizeof(char) * 1);
-	result[0] = '\0';
-	i = 0;
-	while (tab[i])
+	result = ft_calloc(sizeof(char), 1);
+	i = -1;
+	while (tab[++i])
 	{
-		equivalent = ft_getenv(mini, tab[i], envp);
+		if (tab[i][0] == '?')
+			equivalent = ft_get_status(mini, tab[i]);
+		else
+			equivalent = ft_getenv(mini, tab[i], envp);
 		if (equivalent != NULL)
 		{
 			tmp = result;
 			result = ft_strjoin(result, equivalent);
 			free(tmp);
 		}
-		i++;
 	}
 	ft_free_tab(tab);
+	result = check_empty_dollar(result, str);
 	return (result);
 }
 
-static char	*ft_lol(t_struct *mini, char *str, char **envp)
+static char	*ft_replace(t_struct *mini, char *str, char *middle, size_t *i)
 {
-	char	*equivalent;
 	char	*result;
 	char	*tmp;
-	char	**tab;
-	int		i;
+	char	*begin;
+	char	*end;
+	int		j;
 
-	tab = ft_split(str, '$');
-	result = ft_strdup(tab[0]);
-	i = 0;
-	while (tab[i])
-	{
-		equivalent = ft_getenv(mini, tab[i], envp);
-		if (equivalent != NULL)
-		{
-			tmp = result;
-			result = ft_strjoin(result, equivalent);
-			free(tmp);
-		}
-		i++;
-	}
-	ft_free_tab(tab);
+	j = *i + *(i + 1);
+	begin = ft_substr(str, 0, *i);
+	end = ft_substr(str, j, (ft_strlen(str) - j));
+	tmp = ft_strjoin(begin, middle);
+	*i = ft_strlen(tmp) - 1;
+	result = ft_strjoin(tmp, end);
+	if (mini->free_list == NULL)
+		mini->free_list = new_link(result, 0);
+	else
+		mini->free_list = add_link_bottom(mini->free_list, \
+			new_link(result, 0));
+	free(tmp);
+	tmp = NULL;
+	free(begin);
+	begin = NULL;
+	free(end);
+	end = NULL;
 	return (result);
 }
 
-void	replace_env_equivalent(t_struct *mini, char **envp)
+char	*replace_env_equivalent(t_struct *mini, char *str, char **envp)
 {
-	t_list	*begin;
-	char	*result;
+	size_t	i[2];
 	char	*tmp;
-	int		i;
+	char	*result;
 
-	result = NULL;
-	i = 0;
-	begin = mini->lst1;
-	while (mini->lst1)
+	i[0] = 0;
+	while (str[i[0]])
 	{
-		if (ft_strchr(mini->tab[i], '$'))
+		i[0] = ft_check_squotes(str, i[0]);
+		if (str[i[0]] == '$')
 		{
-			if (mini->tab[i][0] == '$')
-				result = ft_lil(mini, mini->tab[i], envp);
-			else
-				result = ft_lol(mini, mini->tab[i], envp);
-			tmp = mini->tab[i];
-			mini->tab[i] = result;
+			i[1] = 0;
+			while (str[i[0] + i[1]] != ' ' && str[i[0] + i[1]] != '	'
+				&& str[i[0] + i[1]] != '\"' && str[i[0] + i[1]])
+				i[1]++;
+			tmp = ft_substr(str, i[0], i[1]);
+			result = ft_lil(mini, tmp, envp);
 			free(tmp);
-			mini->lst1->content = mini->tab[i];
+			str = ft_replace(mini, str, result, &i[0]);
+			free(result);
 		}
-		i++;
-		mini->lst1 = mini->lst1->next;
+		i[0]++;
 	}
-	mini->lst1 = begin;
+	return (str);
 }

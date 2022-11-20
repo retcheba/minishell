@@ -23,12 +23,12 @@ void	sig_handler(int sig)
 	if (sig == 11)
 	{
 		printf("exit\n");
-		exit(0);
+		exit(g_status);
 	}
 	else if (sig == 2)
 	{
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
-	}	
+	}
 }

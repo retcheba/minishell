@@ -71,6 +71,7 @@ void	last_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2])
 			close(fd_io[0]);
 		if (fd_io[1] != 0)
 			close(fd_io[1]);
+		g_status = 0;
 	}
 	pipex->list = add_link_bottom_pipex(pipex->list, new_link_pipex(pid, ok));
 }

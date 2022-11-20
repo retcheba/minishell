@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static size_t	ft_check_quotes(const char *s, size_t i)
+size_t	ft_check_quotes(const char *s, size_t i)
 {
 	size_t	j;
 

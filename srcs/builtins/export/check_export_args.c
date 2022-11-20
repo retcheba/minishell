@@ -114,6 +114,7 @@ static void	put_in_envp(t_struct *mini, char *content)
 		if (search_in_envp(mini, mini->export, content))
 			mini->export = add_link_bottom(mini->export, new_link(content, 0));
 	}
+	g_status = 0;
 }
 
 void	check_export_args(t_struct *mini, t_list *n)

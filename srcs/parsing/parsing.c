@@ -12,6 +12,21 @@
 
 #include "../minishell.h"
 
+size_t	ft_check_squotes(const char *s, size_t i)
+{
+	size_t	j;
+
+	if (s[i] == '\'')
+	{
+		j = 1;
+		while (s[i + j] != '\'' && s[i + j])
+			j++;
+		if (s[i + j] == '\'')
+			i += j;
+	}
+	return (i);
+}
+
 static char	*ft_separate_str(t_struct *mini, char *str, size_t split)
 {
 	char	*result;
@@ -44,6 +59,7 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 	split = 0;
 	while (str[split])
 	{
+		split = ft_check_quotes(str, split);
 		if (str[split] != ' ' && str[split] != '>' && str[split] != '<'
 			&& (str[split + 1] == '|' || str[split + 1] == '>'
 				|| str[split + 1] == '<'))
@@ -63,11 +79,12 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 	return (str);
 }
 
-void	parsing(t_struct *mini)
+void	parsing(t_struct *mini, char **envp)
 {
 	int		i;
 
 	mini->buff = ft_separate_pipe_and_redirections(mini, mini->buff);
+	mini->buff = replace_env_equivalent(mini, mini->buff, envp);
 	mini->tab = ft_split_minishell(mini->buff, ' ');
 	mini->lst1 = NULL;
 	i = 0;

@@ -23,6 +23,7 @@ void	print_env(t_list *env)
 		printf("%s\n", (char *)tmp->content);
 		tmp = tmp->next;
 	}
+	g_status = 0;
 }
 
 //creates the env-list
