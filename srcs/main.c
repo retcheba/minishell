@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_status = 0;
+
 static void	ft_init_minishell(t_struct *mini, char **envp)
 {
 	printf("\033[H\033[2J\033[1;96m-----------------------------------------");
@@ -37,7 +39,6 @@ static void	ft_init_minishell(t_struct *mini, char **envp)
 	signal(SIGINT, sig_handler);
 	signal(SIGSEGV, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	g_status = 0;
 }
 
 static void	ft_free_the_free_list(t_struct *mini)

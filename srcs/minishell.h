@@ -36,7 +36,7 @@
 # define PATH 9
 # define BUILTIN 10
 
-int	g_status;
+extern int	g_status;
 
 //	STRUCTS
 typedef struct s_pid
