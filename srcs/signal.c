@@ -27,6 +27,7 @@ void	sig_handler(int sig)
 	}
 	else if (sig == 2)
 	{
+		g_status = 130;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();

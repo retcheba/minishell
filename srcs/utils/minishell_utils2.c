@@ -29,6 +29,9 @@ int	is_numeric(char *num)
 {
 	int	i;
 
+	if (ft_strstr(num, "9223372036854775808")
+		|| ft_strstr(num, "-9223372036854775809"))
+		return (0);
 	i = 0;
 	if (num[i] == '+' || num[i] == '-')
 		i++;

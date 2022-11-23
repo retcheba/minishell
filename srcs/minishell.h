@@ -100,6 +100,8 @@ t_pid	*add_link_top_pipex(t_pid *list, pid_t pid, int ok);
 
 //	BUILTINS FUNCTIONS
 void	ft_prepare_builtins(t_struct *mini);
+//echo
+void	ft_echo(t_list *n);
 //pwd
 void	ft_pwd(void);
 //env

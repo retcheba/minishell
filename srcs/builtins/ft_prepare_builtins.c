@@ -21,6 +21,8 @@ void	ft_prepare_builtins(t_struct *mini)
 	{
 		if (mini->lst1->tag == BUILTIN)
 		{
+			if (ft_strstr(mini->lst1->content, "echo"))
+				ft_echo(mini->lst1->next);
 			if (ft_strstr(mini->lst1->content, "pwd"))
 				ft_pwd();
 			if (ft_strstr(mini->lst1->content, "env"))

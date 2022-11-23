@@ -14,9 +14,8 @@
 
 static int	is_builtin(char *str)
 {
-	if (
-		//ft_strstr(mini->tab[i], "echo") ||
-		ft_strstr(str, "cd")
+	if (ft_strstr(str, "echo")
+		|| ft_strstr(str, "cd")
 		|| ft_strstr(str, "pwd")
 		|| ft_strstr(str, "export")
 		|| ft_strstr(str, "unset")
