@@ -24,4 +24,6 @@ void	ft_prepare_builtins(t_struct *mini, char **cmd)
 		check_export_args(mini, cmd);
 	if (ft_strstr(cmd[0], "unset"))
 		ft_unset(mini, cmd);
+	if (ft_strstr(cmd[0], "cd"))
+		ft_cd(mini, cmd);
 }

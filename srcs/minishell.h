@@ -119,6 +119,8 @@ int		is_only_alpha(char *s);
 void	ft_print_error(char *cast);
 //unset
 void	ft_unset(t_struct *mini, char **cmd);
+//cd
+void	ft_cd(t_struct *mini, char **cmd);
 
 //	SIMPLE CMD FUNCTIONS
 int		ft_prepare_simple_cmd(t_struct *mini);

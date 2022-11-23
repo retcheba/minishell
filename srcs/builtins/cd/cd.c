@@ -10,40 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-static void	update_pwd_in_export_env(t_list *envp, char *pwd)
+static t_list	*update_pwd_in_export_env(t_list *envp, char *pwd)
 {
 	t_list	*tmp;
 
 	tmp = envp;
-	while (tmp->next)
+	while (envp->next)
 	{
-		if (ft_strncmp((char *)tmp->content, "PWD=", 4) == 0)
+		if (ft_strncmp((char *)envp->content, "PWD=", 4) == 0)
 		{
-			tmp->content = pwd;
+			envp->content = pwd;
 			break ;
 		}
-		tmp = tmp->next;
+		envp = envp->next;
 	}
 	envp = tmp;
+	return (envp);
 }
 
-static void	update_oldpwd_in_export_env(t_list *envp, char *oldpwd)
+static t_list	*update_oldpwd_in_export_env(t_list *envp, char *oldpwd)
 {
 	t_list	*tmp;
 
 	tmp = envp;
-	while (tmp->next)
+	while (envp->next)
 	{
-		if (ft_strncmp((char *)tmp->content, "OLDPWD=", 7) == 0)
+		if (ft_strncmp((char *)envp->content, "OLDPWD=", 7) == 0)
 		{
-			tmp->content = oldpwd;
+			envp->content = oldpwd;
 			break ;
 		}
-		tmp = tmp->next;
+		envp = envp->next;
 	}
 	envp = tmp;
+	return (envp);
 }
 
 static void	update_pwd(t_struct *mini, char *command)
@@ -65,17 +67,17 @@ static void	update_pwd(t_struct *mini, char *command)
 	{
 		if (command)
 		{
-			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(command, 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
 		}
+		g_status = 1;
 		/* ft_putstr_fd("minishell: cd: HOME not set\n", 2); si unset home */
 		return ;
 	}
 	else
 	{
-		update_oldpwd_in_export_env(mini->export, oldpwd);
-		update_oldpwd_in_export_env(mini->env, oldpwd);
+		mini->export = update_oldpwd_in_export_env(mini->export, oldpwd);
+		mini->env = update_oldpwd_in_export_env(mini->env, oldpwd);
 		getcwd(pwd, PATH_MAX);
 		pwd_up = ft_strjoin("PWD=", pwd);
 		if (mini->free_list == NULL)
@@ -83,20 +85,27 @@ static void	update_pwd(t_struct *mini, char *command)
 		else
 			mini->free_list = add_link_bottom(mini->free_list, \
 				new_link(pwd_up, 0));
-		update_pwd_in_export_env(mini->export, pwd_up);
-		update_pwd_in_export_env(mini->env, pwd_up);
+		mini->export = update_pwd_in_export_env(mini->export, pwd_up);
+		mini->env = update_pwd_in_export_env(mini->env, pwd_up);
+		g_status = 0;
 	}
 }
 
-void	ft_cd(t_struct *mini)
+void	ft_cd(t_struct *mini, char **cmd)
 {
 	char	*command;
 	char	oldpwd[PATH_MAX];
 
 	getcwd(oldpwd, PATH_MAX);
-	if (mini->lst1->next == NULL)
+	if (cmd[2] != NULL)
+	{
+		write(2, "cd: too many arguments\n", 23);
+		g_status = 1;
+		return ;
+	}
+	if (cmd[1] == NULL)
 		command = "/home"; //pwd donne le PATH /nfs/homes/subrandt
 	else
-		command = mini->lst1->next->content;
+		command = cmd[1];
 	update_pwd(mini, command);
 }
