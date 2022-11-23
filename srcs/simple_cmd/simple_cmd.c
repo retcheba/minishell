@@ -49,6 +49,15 @@ static void	ft_free_cmd(char *cmd_path, char **cmd)
 	cmd = NULL;
 }
 
+static int	check_builtins(char **cmd)
+{
+	if (ft_strstr(cmd[0], "echo") || ft_strstr(cmd[0], "pwd")
+		|| ft_strstr(cmd[0], "env") || ft_strstr(cmd[0], "export")
+		|| ft_strstr(cmd[0], "unset") || ft_strstr(cmd[0], "cd"))
+		return (1);
+	return (0);
+}
+
 static int	check_cmd(char **cmd, char **cmd_path, char **envp)
 {
 	if (access(cmd[0], F_OK | X_OK) == 0)
@@ -68,7 +77,23 @@ static int	check_cmd(char **cmd, char **cmd_path, char **envp)
 	return (1);
 }
 
-static void	child(char **envp, char **cmd, char *cmd_path, int fd_io[2])
+static void	child_builtin(t_struct *mini, char **cmd, int fd_io[2])
+{
+	if (fd_io[0] != 0)
+	{
+		dup2(fd_io[0], 0);
+		close(fd_io[0]);
+	}
+	if (fd_io[1] != 0)
+	{
+		dup2(fd_io[1], 1);
+		close(fd_io[1]);
+	}
+	ft_prepare_builtins(mini, cmd);
+	exit(g_status);
+}
+
+static void	child_execve(char **envp, char **cmd, char *cmd_path, int fd_io[2])
 {
 	if (fd_io[0] != 0)
 	{
@@ -83,27 +108,44 @@ static void	child(char **envp, char **cmd, char *cmd_path, int fd_io[2])
 	execve(cmd_path, cmd, envp);
 }
 
-void	simple_cmd(char **cmd, char **envp, int fd_io[2])
+void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2])
 {
 	char	*cmd_path;
 	pid_t	pid;
+	int		status;
 
 	cmd_path = NULL;
 	if (fd_io[0] != -1)
 	{
-		if (check_cmd(cmd, &cmd_path, envp))
+		if (check_builtins(cmd))
 		{
 			pid = fork();
 			if (pid == -1)
 				perror("Error");
 			else if (pid == 0)
-				child(envp, cmd, cmd_path, fd_io);
+				child_builtin(mini, cmd, fd_io);
 			if (fd_io[0] != 0)
 				close(fd_io[0]);
 			if (fd_io[1] != 0)
 				close(fd_io[1]);
-			waitpid(pid, NULL, 0);
-			g_status = 0;
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+					g_status = WEXITSTATUS(status);
+		}
+		else if (check_cmd(cmd, &cmd_path, mini->envp))
+		{
+			pid = fork();
+			if (pid == -1)
+				perror("Error");
+			else if (pid == 0)
+				child_execve(mini->envp, cmd, cmd_path, fd_io);
+			if (fd_io[0] != 0)
+				close(fd_io[0]);
+			if (fd_io[1] != 0)
+				close(fd_io[1]);
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+					g_status = WEXITSTATUS(status);
 		}
 	}
 	ft_free_cmd(cmd_path, cmd);

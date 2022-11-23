@@ -117,23 +117,23 @@ static void	put_in_envp(t_struct *mini, char *content)
 	g_status = 0;
 }
 
-void	check_export_args(t_struct *mini, t_list *n)
+void	check_export_args(t_struct *mini, char **cmd)
 {
 	char	*content;
-	char	*cast;
+	int		i;
 
-	if (n == NULL)
+	if (cmd[1] == NULL)
 		print_export(mini->export);
-	while (n != NULL)
+	i = 1;
+	while (cmd[i])
 	{
-		cast = (char *)n->content;
-		if (!(cast[0] == '_' && cast[1] == '='))
+		if (!(cmd[i][0] == '_' && cmd[i][1] == '='))
 		{
-			if (is_only_alpha(cast))
-				ft_print_error(cast);
+			if (is_only_alpha(cmd[i]))
+				ft_print_error(cmd[i]);
 			else
 			{
-				content = ft_strdup(cast);
+				content = ft_strdup(cmd[i]);
 				if (mini->free_list == NULL)
 					mini->free_list = new_link(content, 0);
 				else
@@ -142,6 +142,6 @@ void	check_export_args(t_struct *mini, t_list *n)
 				put_in_envp(mini, content);
 			}
 		}
-		n = n->next;
+		i++;
 	}
 }

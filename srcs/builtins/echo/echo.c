@@ -31,44 +31,46 @@ static int	ft_strstr_echo(char *str, char *cmp)
 	return (0);
 }
 
-static void	print_whithout_lb(t_list *n)
+static void	print_whithout_lb(char **cmd)
 {
-	char	*content;
+	int	i;
 
-	while (n != NULL)
+	i = 2;
+	while (cmd[i])
 	{
-		content = (char *)n->content;
-		printf("%s", content);
-		n = n->next;
+		printf("%s", cmd[i]);
+		if (cmd[i + 1] != NULL)
+			printf(" ");
+		i++;
 	}
 	g_status = 0;
 }
 
-static void	print_whith_lb(t_list *n)
+static void	print_whith_lb(char **cmd)
 {
-	char	*content;
+	int	i;
 
-	while (n != NULL)
+	i = 1;
+	while (cmd[i])
 	{
-		content = (char *)n->content;
-		printf("%s\n", content);
-		n = n->next;
+		printf("%s", cmd[i]);
+		if (cmd[i + 1] != NULL)
+			printf(" ");
+		i++;
 	}
+	printf("\n");
 	g_status = 0;
 }
 
-void	ft_echo(t_list *n)
+void	ft_echo(char **cmd)
 {
-	if (n == NULL)
+	if (cmd[1] == NULL)
 	{
 		printf("\n");
 		g_status = 0;
 	}
-	else if (ft_strstr_echo(n->content, "-n"))
-	{
-		n = n->next;
-		print_whithout_lb(n);
-	}
+	else if (ft_strstr_echo(cmd[1], "-n"))
+		print_whithout_lb(cmd);
 	else
-		print_whith_lb(n);
+		print_whith_lb(cmd);
 }

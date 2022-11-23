@@ -81,7 +81,7 @@ static char	***fill_tab_cmds(t_struct *mini, char ***cmds)
 	return (cmds);
 }
 
-void	ft_prepare_pipex(t_struct *mini, char **envp)
+void	ft_prepare_pipex(t_struct *mini)
 {
 	char	***cmds;
 	int		index;
@@ -96,7 +96,7 @@ void	ft_prepare_pipex(t_struct *mini, char **envp)
 	pipex.fd_ios = malloc(sizeof(*pipex.fd_ios) * pipex.nb_cmds);
 	fill_tab_fd_ios(mini, &pipex);
 	cmds = fill_tab_cmds(mini, cmds);
-	ft_pipex(&pipex, cmds, envp, pipex.fd_ios);
+	ft_pipex(&pipex, cmds, mini, pipex.fd_ios);
 	free(cmds);
 	index = 0;
 	while (index < pipex.nb_cmds)

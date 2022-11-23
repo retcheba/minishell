@@ -83,16 +83,16 @@ static void	ft_remove_in_env(t_struct *mini, char *unset)
 	mini->env = begin;
 }
 
-void	ft_unset(t_struct *mini, t_list *n)
+void	ft_unset(t_struct *mini, char **cmd)
 {
-	char	*unset;
+	int	i;
 
-	while (n != NULL)
+	i = 1;
+	while (cmd[i])
 	{
-		unset = (char *)n->content;
-		ft_remove_in_export(mini, unset);
-		ft_remove_in_env(mini, unset);
-		n = n->next;
+		ft_remove_in_export(mini, cmd[i]);
+		ft_remove_in_env(mini, cmd[i]);
+		i++;
 	}
 	g_status = 0;
 }

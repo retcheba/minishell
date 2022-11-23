@@ -12,27 +12,16 @@
 
 #include "../minishell.h"
 
-void	ft_prepare_builtins(t_struct *mini)
+void	ft_prepare_builtins(t_struct *mini, char **cmd)
 {
-	t_list	*begin;
-
-	begin = mini->lst1;
-	while (mini->lst1)
-	{
-		if (mini->lst1->tag == BUILTIN)
-		{
-			if (ft_strstr(mini->lst1->content, "echo"))
-				ft_echo(mini->lst1->next);
-			if (ft_strstr(mini->lst1->content, "pwd"))
-				ft_pwd();
-			if (ft_strstr(mini->lst1->content, "env"))
-				print_env(mini->env);
-			if (ft_strstr(mini->lst1->content, "export"))
-				check_export_args(mini, mini->lst1->next);
-			if (ft_strstr(mini->lst1->content, "unset"))
-				ft_unset(mini, mini->lst1->next);
-		}
-		mini->lst1 = mini->lst1->next;
-	}
-	mini->lst1 = begin;
+	if (ft_strstr(cmd[0], "echo"))
+		ft_echo(cmd);
+	if (ft_strstr(cmd[0], "pwd"))
+		ft_pwd();
+	if (ft_strstr(cmd[0], "env"))
+		print_env(mini->env);
+	if (ft_strstr(cmd[0], "export"))
+		check_export_args(mini, cmd);
+	if (ft_strstr(cmd[0], "unset"))
+		ft_unset(mini, cmd);
 }

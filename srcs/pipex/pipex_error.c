@@ -50,3 +50,12 @@ int	check_cmd_pipex(t_pipex *pipex, char **envp)
 	}
 	return (1);
 }
+
+int	check_builtins_pipex(t_pipex *pipex)
+{
+	if (ft_strstr(pipex->cmd[0], "echo") || ft_strstr(pipex->cmd[0], "pwd")
+		|| ft_strstr(pipex->cmd[0], "env") || ft_strstr(pipex->cmd[0], "export")
+		|| ft_strstr(pipex->cmd[0], "unset") || ft_strstr(pipex->cmd[0], "cd"))
+		return (1);
+	return (0);
+}

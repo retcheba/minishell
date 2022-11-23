@@ -15,6 +15,7 @@
 static void	ft_execute_waitpid(t_pipex *pipex)
 {
 	t_pid	*begin;
+	int		status;
 
 	begin = pipex->list;
 	while (pipex->list)
@@ -22,7 +23,11 @@ static void	ft_execute_waitpid(t_pipex *pipex)
 		if (pipex->list->ok == 1)
 		{
 			if (pipex->list->pid != -1)
-				waitpid(pipex->list->pid, NULL, 0);
+			{
+				waitpid(pipex->list->pid, &status, 0);
+				if (WIFEXITED(status))
+					g_status = WEXITSTATUS(status);
+			}
 		}
 		pipex->list = pipex->list->next;
 	}
@@ -30,19 +35,19 @@ static void	ft_execute_waitpid(t_pipex *pipex)
 	ft_free_list_pipex(pipex->list);
 }
 
-void	ft_pipex(t_pipex *pipex, char ***cmds, char **envp, int *fd_ios[2])
+void	ft_pipex(t_pipex *pipex, char ***cmds, t_struct *mini, int *fd_ios[2])
 {
 	pipex->list = NULL;
-	first_cmd(pipex, cmds, envp, fd_ios[0]);
+	first_cmd(pipex, cmds, mini, fd_ios[0]);
 	pipex->index = 2;
 	while (pipex->index < pipex->nb_cmds)
 	{
 		if (pipex->index % 2 == 0)
-			even_cmd(pipex, cmds, envp, fd_ios[pipex->index - 1]);
+			even_cmd(pipex, cmds, mini, fd_ios[pipex->index - 1]);
 		else
-			odd_cmd(pipex, cmds, envp, fd_ios[pipex->index - 1]);
+			odd_cmd(pipex, cmds, mini, fd_ios[pipex->index - 1]);
 		pipex->index++;
 	}
-	last_cmd(pipex, cmds, envp, fd_ios[pipex->nb_cmds - 1]);
+	last_cmd(pipex, cmds, mini, fd_ios[pipex->nb_cmds - 1]);
 	ft_execute_waitpid(pipex);
 }

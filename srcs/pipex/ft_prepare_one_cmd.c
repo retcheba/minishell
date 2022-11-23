@@ -21,7 +21,7 @@ static int	ft_len_cmd(t_struct *mini)
 	begin = mini->lst1;
 	while (mini->lst1 && mini->lst1->tag != PIPE)
 	{
-		if (mini->lst1->tag == CMD)
+		if (mini->lst1->tag == CMD || mini->lst1->tag == BUILTIN)
 		{
 			len++;
 			mini->lst1 = mini->lst1->next;
@@ -47,7 +47,7 @@ static char	**fill_tab_cmd(t_struct *mini, char **cmd)
 	begin = mini->lst1;
 	while (mini->lst1 && mini->lst1->tag != PIPE)
 	{
-		if (mini->lst1->tag == CMD)
+		if (mini->lst1->tag == CMD || mini->lst1->tag == BUILTIN)
 		{
 			cmd[len] = ft_substr(mini->lst1->content, 0, \
 				ft_strlen(mini->lst1->content));

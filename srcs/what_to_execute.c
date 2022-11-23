@@ -57,7 +57,7 @@ static void	check_what(t_struct *mini, int	*pipex, int	*builtin, int *cmd)
 	mini->lst1 = begin;
 }
 
-void	what_to_execute(t_struct *mini, char **envp)
+void	what_to_execute(t_struct *mini)
 {
 	int		pipex;
 	int		builtin;
@@ -70,11 +70,9 @@ void	what_to_execute(t_struct *mini, char **envp)
 	{
 		check_what(mini, &pipex, &builtin, &cmd);
 		if (pipex > 0)
-			ft_prepare_pipex(mini, envp);
-		else if (builtin > 0)
-			ft_prepare_builtins(mini);
-		else if (cmd > 0)
-			ft_prepare_simple_cmd(mini, envp);
+			ft_prepare_pipex(mini);
+		else if (builtin > 0 || cmd > 0)
+			ft_prepare_simple_cmd(mini);
 		else
 		{
 			check_redir_in(mini);

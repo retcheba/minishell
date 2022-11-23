@@ -67,12 +67,12 @@ typedef struct s_pipex
 	char	**cmd;
 	char	*cmd_path;
 	t_pid	*list;
+	t_list	*builtin;
 }	t_pipex;
 
 //	MAIN FUNCTIONS
 void	ft_tag_word(t_struct *mini);
-void	what_to_execute(t_struct *mini, char **envp);
-char	*get_cmd_path(char *cmd, char **envp);
+void	what_to_execute(t_struct *mini);
 void	sig_handler(int sig);
 
 //	PARSING FUNCTIONS
@@ -84,14 +84,15 @@ size_t	ft_check_quotes(const char *s, size_t i);
 size_t	ft_check_squotes(const char *s, size_t i);
 
 //	PIPEX FUNCTIONS
-void	ft_prepare_pipex(t_struct *mini, char **envp);
+void	ft_prepare_pipex(t_struct *mini);
 char	**ft_prepare_one_cmd(t_struct *mini);
-void	ft_pipex(t_pipex *pipex, char ***cmd, char **envp, int *fd_ios[2]);
-void	first_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2]);
-void	even_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2]);
-void	odd_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2]);
-void	last_cmd(t_pipex *pipex, char ***cmds, char **envp, int fd_io[2]);
+void	ft_pipex(t_pipex *pipex, char ***cmd, t_struct *mini, int *fd_ios[2]);
+void	first_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2]);
+void	even_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2]);
+void	odd_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2]);
+void	last_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2]);
 int		check_cmd_pipex(t_pipex *pipex, char **envp);
+int		check_builtins_pipex(t_pipex *pipex);
 void	ft_free_var(char *cmd_path, char **cmd);
 void	ft_free_list_pipex(t_pid *list);
 t_pid	*new_link_pipex(pid_t pid, int ok);
@@ -99,9 +100,9 @@ t_pid	*add_link_bottom_pipex(t_pid *list, t_pid *new);
 t_pid	*add_link_top_pipex(t_pid *list, pid_t pid, int ok);
 
 //	BUILTINS FUNCTIONS
-void	ft_prepare_builtins(t_struct *mini);
+void	ft_prepare_builtins(t_struct *mini, char **cmd);
 //echo
-void	ft_echo(t_list *n);
+void	ft_echo(char **cmd);
 //pwd
 void	ft_pwd(void);
 //env
@@ -110,18 +111,18 @@ void	print_env(t_list *env);
 //export
 void	ft_init_export(t_struct *mini, char **envp);
 void	print_export(t_list *export);
-void	check_export_args(t_struct *mini, t_list *next);
+void	check_export_args(t_struct *mini, char **cmd);
 //utils export
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 int		is_only_alpha(char *s);
 void	ft_print_error(char *cast);
 //unset
-void	ft_unset(t_struct *mini, t_list *n);
+void	ft_unset(t_struct *mini, char **cmd);
 
 //	SIMPLE CMD FUNCTIONS
-int		ft_prepare_simple_cmd(t_struct *mini, char **envp);
-void	simple_cmd(char **cmd, char **envp, int fd_io[2]);
+int		ft_prepare_simple_cmd(t_struct *mini);
+void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2]);
 
 //	CHAINED-LIST FUNCTIONS
 t_list	*new_link(void *content, int tag);
@@ -131,6 +132,7 @@ void	ft_free_list(t_list *lst);
 t_list	*ft_listlast(t_list *lst, int i);
 
 //	UTILS FUNCTIONS
+char	*get_cmd_path(char *cmd, char **envp);
 int		ft_heredoc(char *stop);
 void	ft_free_tab(char **tab);
 int		ft_strstr(char *str, char *to_find);

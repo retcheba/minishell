@@ -16,6 +16,7 @@ int	g_status = 0;
 
 static void	ft_init_minishell(t_struct *mini, char **envp)
 {
+	/*
 	printf("\033[H\033[2J\033[1;96m-----------------------------------------");
 	printf("\033[1;96m--------------------------\033[0m\n");
 	printf("\033[91m███╗   ███╗██╗███╗   ██╗██╗");
@@ -33,6 +34,7 @@ static void	ft_init_minishell(t_struct *mini, char **envp)
 	printf("\033[1;96mMade by: subrandt & retcheba\033[0m\n");
 	printf("\033[1;96m-----------------------------------------");
 	printf("\033[1;96m--------------------------\033[0m\n\n");
+	*/
 	ft_init_env(mini, envp);
 	ft_init_export(mini, envp);
 	mini->envp = NULL;
@@ -114,7 +116,7 @@ int	main(int argc, char **argv, char **envp)
 			mini.envp = ft_envp(&mini);
 			parsing(&mini, mini.envp);
 			ft_tag_word(&mini);
-			what_to_execute(&mini, mini.envp);
+			what_to_execute(&mini);
 			if (mini.lst1->tag == EXIT && check_exit_args(&mini))
 				ft_exit(&mini);
 			ft_free_tab(mini.tab);
