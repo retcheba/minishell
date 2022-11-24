@@ -78,8 +78,7 @@ void	what_to_execute(t_struct *mini)
 			ft_prepare_simple_cmd(mini);
 		else
 		{
-			check_redir_in(mini, &error);
-			check_redir_out(mini, &error);
+			check_redirs(mini, &error, NULL, NULL);
 			if (error == 1)
 				g_status = 1;
 		}

@@ -85,8 +85,7 @@ int	ft_prepare_simple_cmd(t_struct *mini)
 		return (1);
 	cmd[len - 1] = NULL;
 	cmd = ft_get_cmd(mini, cmd);
-	fd_io[0] = check_redir_in(mini, &error);
-	fd_io[1] = check_redir_out(mini, &error);
+	check_redirs(mini, &error, &fd_io[0], &fd_io[1]);
 	simple_cmd(mini, cmd, fd_io, error);
 	if (error == 1)
 		g_status = 1;

@@ -29,7 +29,7 @@ static int	ft_nb_cmds(t_struct *mini)
 	return (nb_cmds);
 }
 
-static void	fill_tab_fd_ios(t_struct *mini, t_pipex *pipex)
+static int	fill_tab_fd_ios(t_struct *mini, t_pipex *pipex)
 {
 	t_list	*begin;
 	int		index;
@@ -50,14 +50,14 @@ static void	fill_tab_fd_ios(t_struct *mini, t_pipex *pipex)
 			mini->lst1 = mini->lst1->next;
 		while (mini->lst1 && mini->lst1->tag != PIPE)
 		{
-			pipex->fd_ios[index][0] = check_redir_in(mini, &error);
-			pipex->fd_ios[index][1] = check_redir_out(mini, &error);
+			check_redirs(mini, &error, &pipex->fd_ios[index][0], &pipex->fd_ios[index][1]);
 			while (mini->lst1 && mini->lst1->tag != PIPE)
 				mini->lst1 = mini->lst1->next;
 		}
 		index++;
 	}
 	mini->lst1 = begin;
+	return (error);
 }
 
 static char	***fill_tab_cmds(t_struct *mini, char ***cmds)

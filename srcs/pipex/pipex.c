@@ -25,7 +25,7 @@ static void	ft_execute_waitpid(t_pipex *pipex)
 			if (pipex->list->pid != -1)
 			{
 				waitpid(pipex->list->pid, &status, 0);
-				if (WIFEXITED(status))
+				if (WIFEXITED(status) && pipex->list->next == NULL)
 					g_status = WEXITSTATUS(status);
 			}
 		}
