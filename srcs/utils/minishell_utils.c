@@ -42,7 +42,7 @@ int	ft_strstr(char *str, char *to_find)
 	return (0);
 }
 
-int	check_redir_in(t_struct *mini)
+int	check_redir_in(t_struct *mini, int *error)
 {
 	int		fd_in;
 	t_list	*begin;
@@ -55,10 +55,10 @@ int	check_redir_in(t_struct *mini)
 			&& mini->lst1->next->tag == FILE)
 		{
 			fd_in = open(mini->lst1->next->content, O_RDONLY);
-			if (fd_in == -1)
+			if (fd_in == -1 && *error != 1)
 			{
 				perror("Error");
-				g_status = 1;
+				*error = 1;
 			}
 		}
 		if (mini->lst1->tag == DREDIR_IN && mini->lst1->next->tag == FILE)
@@ -69,7 +69,7 @@ int	check_redir_in(t_struct *mini)
 	return (fd_in);
 }
 
-int	check_redir_out(t_struct *mini)
+int	check_redir_out(t_struct *mini, int *error)
 {
 	int		fd_out;
 	t_list	*begin;
@@ -82,15 +82,21 @@ int	check_redir_out(t_struct *mini)
 		{
 			fd_out = open(mini->lst1->next->content, O_WRONLY | O_TRUNC \
 				| O_CREAT, 0644);
-			if (fd_out == -1)
+			if (fd_out == -1 && *error != 1)
+			{
 				perror("Error");
+				*error = 1;
+			}
 		}
 		if (mini->lst1->tag == DREDIR_OUT && mini->lst1->next->tag == FILE)
 		{
 			fd_out = open(mini->lst1->next->content, O_WRONLY | O_APPEND \
 				| O_CREAT, 0644);
-			if (fd_out == -1)
+			if (fd_out == -1 && *error != 1)
+			{
 				perror("Error");
+				*error = 1;
+			}
 		}
 		mini->lst1 = mini->lst1->next;
 	}

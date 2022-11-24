@@ -79,15 +79,32 @@ static int	check_cmd(char **cmd, char **cmd_path, char **envp)
 
 static void	exec_builtin(t_struct *mini, char **cmd, int fd_io[2])
 {
+	int	cpy0;
+	int	cpy1;
+
 	if (fd_io[0] != 0)
+	{
+		cpy0 = dup(0);
 		dup2(fd_io[0], 0);
+	}
 	if (fd_io[1] != 0)
+	{
+		cpy1 = dup(1);
 		dup2(fd_io[1], 1);
+	}
 	ft_prepare_builtins(mini, cmd);
 	if (fd_io[0] != 0)
+	{
 		close(fd_io[0]);
+		dup2(cpy0, 0);
+		close(cpy0);
+	}
 	if (fd_io[1] != 0)
+	{
 		close(fd_io[1]);
+		dup2(cpy1, 1);
+		close(cpy1);
+	}
 }
 
 static void	child_execve(char **envp, char **cmd, char *cmd_path, int fd_io[2])
@@ -105,14 +122,14 @@ static void	child_execve(char **envp, char **cmd, char *cmd_path, int fd_io[2])
 	execve(cmd_path, cmd, envp);
 }
 
-void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2])
+void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2], int error)
 {
 	char	*cmd_path;
 	pid_t	pid;
 	int		status;
 
 	cmd_path = NULL;
-	if (fd_io[0] != -1)
+	if (fd_io[0] != -1 && fd_io[1] != -1 && error != 1)
 	{
 		if (check_builtins(cmd))
 			exec_builtin(mini, cmd, fd_io);

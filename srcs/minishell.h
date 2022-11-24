@@ -124,7 +124,7 @@ void	ft_cd(t_struct *mini, char **cmd);
 
 //	SIMPLE CMD FUNCTIONS
 int		ft_prepare_simple_cmd(t_struct *mini);
-void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2]);
+void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2], int error);
 
 //	CHAINED-LIST FUNCTIONS
 t_list	*new_link(void *content, int tag);
@@ -138,8 +138,8 @@ char	*get_cmd_path(char *cmd, char **envp);
 int		ft_heredoc(char *stop);
 void	ft_free_tab(char **tab);
 int		ft_strstr(char *str, char *to_find);
-int		check_redir_out(t_struct *mini);
-int		check_redir_in(t_struct *mini);
+int		check_redir_out(t_struct *mini, int *error);
+int		check_redir_in(t_struct *mini, int *error);
 char	**ft_envp(t_struct *mini);
 char	*check_empty_dollar(char *result, char *str);
 int		is_numeric(char *num);

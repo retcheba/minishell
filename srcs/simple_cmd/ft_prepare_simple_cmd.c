@@ -25,9 +25,10 @@ static int	ft_len_cmd(t_struct *mini)
 		{
 			len++;
 			mini->lst1 = mini->lst1->next;
-			while (mini->lst1 && mini->lst1->tag == ARG)
+			while (mini->lst1)
 			{
-				len++;
+				if (mini->lst1->tag == ARG)
+					len++;
 				mini->lst1 = mini->lst1->next;
 			}
 			break ;
@@ -52,11 +53,14 @@ static char	**ft_get_cmd(t_struct *mini, char **cmd)
 			cmd[i] = ft_substr(mini->lst1->content, 0, \
 				ft_strlen(mini->lst1->content));
 			mini->lst1 = mini->lst1->next;
-			while (mini->lst1 && mini->lst1->tag == ARG)
+			while (mini->lst1)
 			{
-				i++;
-				cmd[i] = ft_substr(mini->lst1->content, 0, \
-					ft_strlen(mini->lst1->content));
+				if (mini->lst1->tag == ARG)
+				{
+					i++;
+					cmd[i] = ft_substr(mini->lst1->content, 0, \
+						ft_strlen(mini->lst1->content));
+				}
 				mini->lst1 = mini->lst1->next;
 			}
 			break ;
@@ -72,15 +76,19 @@ int	ft_prepare_simple_cmd(t_struct *mini)
 	char	**cmd;
 	int		fd_io[2];
 	int		len;
+	int		error;
 
+	error = 0;
 	len = ft_len_cmd(mini);
 	cmd = malloc(sizeof(char *) * len);
 	if (!cmd)
 		return (1);
 	cmd[len - 1] = NULL;
 	cmd = ft_get_cmd(mini, cmd);
-	fd_io[0] = check_redir_in(mini);
-	fd_io[1] = check_redir_out(mini);
-	simple_cmd(mini, cmd, fd_io);
+	fd_io[0] = check_redir_in(mini, &error);
+	fd_io[1] = check_redir_out(mini, &error);
+	simple_cmd(mini, cmd, fd_io, error);
+	if (error == 1)
+		g_status = 1;
 	return (0);
 }

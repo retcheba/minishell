@@ -70,7 +70,7 @@ void	first_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2])
 	if (pipe(pipex->fds_pipe1) != -1)
 	{
 		pipex->cmd = cmds[0];
-		if (check_builtins_pipex(pipex) && fd_io[0] != -1)
+		if (check_builtins_pipex(pipex) && fd_io[0] != -1 && fd_io[1] != -1)
 		{
 			pid = fork();
 			if (pid == -1)
@@ -81,7 +81,7 @@ void	first_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2])
 			ft_free_tab(pipex->cmd);
 			ft_close_fd_io(fd_io);
 		}
-		else if (check_cmd_pipex(pipex, mini->envp) && fd_io[0] != -1)
+		else if (check_cmd_pipex(pipex, mini->envp) && fd_io[0] != -1 && fd_io[1] != -1)
 		{
 			pid = fork();
 			if (pid == -1)

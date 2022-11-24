@@ -62,12 +62,15 @@ void	what_to_execute(t_struct *mini)
 	int		pipex;
 	int		builtin;
 	int		cmd;
+	int		error;
 
 	pipex = 0;
 	builtin = 0;
 	cmd = 0;
+	error = 0;
 	if (!(is_syntax_error(mini)))
 	{
+		g_status = 0;
 		check_what(mini, &pipex, &builtin, &cmd);
 		if (pipex > 0)
 			ft_prepare_pipex(mini);
@@ -75,8 +78,10 @@ void	what_to_execute(t_struct *mini)
 			ft_prepare_simple_cmd(mini);
 		else
 		{
-			check_redir_in(mini);
-			check_redir_out(mini);
+			check_redir_in(mini, &error);
+			check_redir_out(mini, &error);
+			if (error == 1)
+				g_status = 1;
 		}
 	}
 	else

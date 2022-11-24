@@ -33,7 +33,9 @@ static void	fill_tab_fd_ios(t_struct *mini, t_pipex *pipex)
 {
 	t_list	*begin;
 	int		index;
+	int		error;
 
+	error = 0;
 	index = -1;
 	while (index++ < pipex->nb_cmds - 1)
 	{
@@ -48,8 +50,8 @@ static void	fill_tab_fd_ios(t_struct *mini, t_pipex *pipex)
 			mini->lst1 = mini->lst1->next;
 		while (mini->lst1 && mini->lst1->tag != PIPE)
 		{
-			pipex->fd_ios[index][0] = check_redir_in(mini);
-			pipex->fd_ios[index][1] = check_redir_out(mini);
+			pipex->fd_ios[index][0] = check_redir_in(mini, &error);
+			pipex->fd_ios[index][1] = check_redir_out(mini, &error);
 			while (mini->lst1 && mini->lst1->tag != PIPE)
 				mini->lst1 = mini->lst1->next;
 		}

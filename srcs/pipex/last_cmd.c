@@ -82,7 +82,7 @@ void	last_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2])
 	pid = 0;
 	ok = 0;
 	pipex->cmd = cmds[pipex->nb_cmds - 1];
-	if (check_builtins_pipex(pipex) && fd_io[0] != -1)
+	if (check_builtins_pipex(pipex) && fd_io[0] != -1 && fd_io[1] != -1)
 	{
 		pid = fork();
 		if (pid == -1)
@@ -97,7 +97,7 @@ void	last_cmd(t_pipex *pipex, char ***cmds, t_struct *mini, int fd_io[2])
 		if (fd_io[1] != 0)
 			close(fd_io[1]);
 	}
-	else if (check_cmd_pipex(pipex, mini->envp) && fd_io[0] != -1)
+	else if (check_cmd_pipex(pipex, mini->envp) && fd_io[0] != -1 && fd_io[1] != -1)
 	{
 		pid = fork();
 		if (pid == -1)
