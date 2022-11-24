@@ -50,6 +50,8 @@ static int	fill_tab_fd_ios(t_struct *mini, t_pipex *pipex)
 			mini->lst1 = mini->lst1->next;
 		while (mini->lst1 && mini->lst1->tag != PIPE)
 		{
+			pipex->fd_ios[index][0] = 0;
+			pipex->fd_ios[index][1] = 0;
 			check_redirs(mini, &error, &pipex->fd_ios[index][0], &pipex->fd_ios[index][1]);
 			while (mini->lst1 && mini->lst1->tag != PIPE)
 				mini->lst1 = mini->lst1->next;

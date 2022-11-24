@@ -79,6 +79,8 @@ int	ft_prepare_simple_cmd(t_struct *mini)
 	int		error;
 
 	error = 0;
+	fd_io[0] = 0;
+	fd_io[1] = 0;
 	len = ft_len_cmd(mini);
 	cmd = malloc(sizeof(char *) * len);
 	if (!cmd)

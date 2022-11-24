@@ -77,7 +77,7 @@ void	sig_handler(int sig);
 
 //	PARSING FUNCTIONS
 void	parsing(t_struct *mini, char **envp);
-char	**ft_split_minishell(char const *s, char c);
+char	**ft_split_minishell(char const *s);
 char	*ft_substr_minishell(char const *s, unsigned int start, size_t len);
 char	*replace_env_equivalent(t_struct *mini, char *str, char **envp);
 size_t	ft_check_quotes(const char *s, size_t i);

@@ -35,32 +35,33 @@ size_t	ft_check_quotes(const char *s, size_t i)
 	return (i);
 }
 
-static size_t	cmpt_words(const char *s, char c)
+static size_t	cmpt_words(const char *s)
 {
 	size_t	i;
 	size_t	cmpt;
 
 	i = 0;
-	if (s[i] == c || s[i] == 0)
+	if (s[i] == ' ' || s[i] == '	' || s[i] == 0)
 		cmpt = 0;
 	else
 		cmpt = 1;
 	while (s[i])
 	{
 		i = ft_check_quotes(s, i);
-		if (s[i] == c && s[i + 1] != c && s[i + 1] != 0)
+		if ((s[i] == ' ' || s[i] == '	') && s[i + 1] != ' '
+			&& s[i + 1] != '	' && s[i + 1] != 0)
 			cmpt++;
 		i++;
 	}
 	return (cmpt + 1);
 }
 
-static size_t	ft_len_word(const char *s, char c, size_t i, size_t len)
+static size_t	ft_len_word(const char *s, size_t i, size_t len)
 {
 	size_t	j;
 
 	j = 0;
-	while (s[i + len] != c && s[i + len])
+	while (s[i + len] != ' ' && s[i + len] != '	' && s[i + len])
 	{
 		if (s[i + len] == '\"')
 		{
@@ -83,7 +84,7 @@ static size_t	ft_len_word(const char *s, char c, size_t i, size_t len)
 	return (len);
 }
 
-static char	**fill_tab(const char *s, char c, char **str)
+static char	**fill_tab(const char *s, char **str)
 {
 	size_t	i;
 	size_t	len;
@@ -94,16 +95,16 @@ static char	**fill_tab(const char *s, char c, char **str)
 	cmp = 0;
 	while (s[i])
 	{
-		while (s[i] == c && s[i])
+		while ((s[i] == ' ' || s[i] == '	') && s[i])
 			i++;
-		len = ft_len_word(s, c, i, len);
+		len = ft_len_word(s, i, len);
 		if (len > 0)
 		{
 			str[cmp] = ft_substr_minishell(s, i, len);
 			cmp++;
 		}
 		i += len;
-		while (s[i] == c && s[i])
+		while ((s[i] == ' ' || s[i] == '	') && s[i])
 			i++;
 		len = 0;
 	}
@@ -111,15 +112,15 @@ static char	**fill_tab(const char *s, char c, char **str)
 	return (str);
 }
 
-char	**ft_split_minishell(char const *s, char c)
+char	**ft_split_minishell(char const *s)
 {
 	char			**str;
 
 	if (!s)
 		return (NULL);
-	str = malloc(sizeof(char *) * (cmpt_words(s, c)));
+	str = malloc(sizeof(char *) * (cmpt_words(s)));
 	if (!str)
 		return (NULL);
-	str = fill_tab(s, c, str);
+	str = fill_tab(s, str);
 	return (str);
 }

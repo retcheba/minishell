@@ -51,9 +51,9 @@ static void	ft_free_cmd(char *cmd_path, char **cmd)
 
 static int	check_builtins(char **cmd)
 {
-	if (ft_strstr(cmd[0], "echo") || ft_strstr(cmd[0], "pwd")
+	if (ft_strstr(cmd[0], "echo") || ft_strstr(cmd[0], "cd")
 		|| ft_strstr(cmd[0], "env") || ft_strstr(cmd[0], "export")
-		|| ft_strstr(cmd[0], "unset") || ft_strstr(cmd[0], "cd"))
+		|| ft_strstr(cmd[0], "unset") || ft_strstr(cmd[0], "pwd"))
 		return (1);
 	return (0);
 }

@@ -60,7 +60,7 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 	while (str[split])
 	{
 		split = ft_check_quotes(str, split);
-		if (str[split] != ' ' && str[split] != '>' && str[split] != '<'
+		if (str[split] != ' ' && str[split] != '	' && str[split] != '>' && str[split] != '<'
 			&& (str[split + 1] == '|' || str[split + 1] == '>'
 				|| str[split + 1] == '<'))
 		{
@@ -68,7 +68,7 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 			str = ft_separate_str(mini, str, split);
 		}
 		else if ((str[split] == '|' || str[split] == '>' || str[split] == '<')
-			&& str[split + 1] != ' ' && str[split + 1] != '>'
+			&& str[split + 1] != ' ' && str[split + 1] != '	' && str[split + 1] != '>'
 			&& str[split + 1] != '<' && str[split + 1] != '\0')
 		{
 			split++;
@@ -85,7 +85,7 @@ void	parsing(t_struct *mini, char **envp)
 
 	mini->buff = ft_separate_pipe_and_redirections(mini, mini->buff);
 	mini->buff = replace_env_equivalent(mini, mini->buff, envp);
-	mini->tab = ft_split_minishell(mini->buff, ' ');
+	mini->tab = ft_split_minishell(mini->buff);
 	mini->lst1 = NULL;
 	i = 0;
 	while (mini->tab[i])
