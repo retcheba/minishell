@@ -62,7 +62,7 @@ static int	check_cmd(char **cmd, char **cmd_path, char **envp)
 {
 	if (access(cmd[0], F_OK | X_OK) == 0)
 	{
-		*cmd_path = ft_strdup(cmd[0]);
+		*cmd_path = cmd[0];
 		cmd[0] = detach_cmd_from_path(*cmd_path);
 	}
 	else
