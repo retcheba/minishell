@@ -44,59 +44,18 @@ static void	ft_init_minishell(t_struct *mini, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	ft_free_the_free_list(t_struct *mini)
+static int	is_empty_buff(char *buff)
 {
-	t_list	*begin;
+	int	i;
 
-	begin = mini->free_list;
-	while (mini->free_list)
+	if (buff == NULL)
+		return (0);
+	i = 0;
+	while (buff[i])
 	{
-		free(mini->free_list->content);
-		mini->free_list = mini->free_list->next;
-	}
-	mini->free_list = begin;
-	ft_free_list(mini->free_list);
-}
-
-static void	ft_exit(t_struct *mini)
-{
-	printf ("exit\n");
-	free(mini->buff);
-	ft_free_tab(mini->tab);
-	ft_free_list(mini->lst1);
-	ft_free_the_free_list(mini);
-	ft_free_list(mini->env);
-	ft_free_list(mini->export);
-	if (mini->envp != NULL)
-		ft_free_tab(mini->envp);
-	exit(g_status);
-}
-
-static int	check_exit_args(t_struct *mini)
-{
-	if (mini->lst1->next == NULL)
-		return (1);
-	else if (is_numeric(mini->lst1->next->content))
-	{
-		if (mini->lst1->next->next != NULL)
-		{
-			write(2, "exit: too many arguments\n", 25);
-			g_status = 1;
-		}
-		else
-		{
-			g_status = get_status(ft_atoi(mini->lst1->next->content));
+		if (buff[i] != ' ' && buff[i] != '	')
 			return (1);
-		}
-	}
-	else
-	{
-		write(2, "exit: ", 6);
-		write(2, mini->lst1->next->content, \
-			ft_strlen(mini->lst1->next->content));
-		write(2, ": numeric argument required\n", 28);
-		g_status = 2;
-		return (1);
+		i++;
 	}
 	return (0);
 }
@@ -112,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		mini.buff = readline("\033[1;91mminishell\033[0m  ");
 		add_history(mini.buff);
-		if (mini.buff[0] != 0)
+		if (is_empty_buff(mini.buff))
 		{
 			mini.envp = ft_envp(&mini);
 			parsing(&mini, mini.envp);

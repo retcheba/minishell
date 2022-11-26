@@ -121,6 +121,9 @@ void	ft_print_error(char *cast);
 void	ft_unset(t_struct *mini, char **cmd);
 //cd
 void	ft_cd(t_struct *mini, char **cmd);
+//exit
+void	ft_exit(t_struct *mini);
+int		check_exit_args(t_struct *mini);
 
 //	SIMPLE CMD FUNCTIONS
 int		ft_prepare_simple_cmd(t_struct *mini);
