@@ -74,11 +74,13 @@ int	main(int argc, char **argv, char **envp)
 		if (is_empty_buff(mini.buff))
 		{
 			mini.envp = ft_envp(&mini);
-			parsing(&mini, mini.envp);
-			ft_tag_word(&mini);
-			what_to_execute(&mini);
-			if (mini.lst1->tag == EXIT && check_exit_args(&mini))
-				ft_exit(&mini);
+			if (parsing(&mini, mini.envp))
+			{
+				ft_tag_word(&mini);
+				what_to_execute(&mini);
+				if (mini.lst1->tag == EXIT && check_exit_args(&mini))
+					ft_exit(&mini);
+			}
 			ft_free_tab(mini.tab);
 			ft_free_list(mini.lst1);
 		}

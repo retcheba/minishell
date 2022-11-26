@@ -80,7 +80,7 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 	return (str);
 }
 
-void	parsing(t_struct *mini, char **envp)
+int	parsing(t_struct *mini, char **envp)
 {
 	int		i;
 
@@ -97,4 +97,7 @@ void	parsing(t_struct *mini, char **envp)
 			add_link_bottom(mini->lst1, new_link(mini->tab[i], -1));
 		i++;
 	}
+	if (i == 0)
+		return (0);
+	return (1);
 }
