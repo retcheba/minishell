@@ -125,6 +125,11 @@ void	ft_cd(t_struct *mini, char **cmd);
 //	SIMPLE CMD FUNCTIONS
 int		ft_prepare_simple_cmd(t_struct *mini);
 void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2], int error);
+//utils simple cmd
+void	ft_free_cmd(char *cmd_path, char **cmd);
+int		check_builtins(char **cmd);
+int		check_cmd(char **cmd, char **cmd_path, char **envp);
+void	print_execve_error(char *cmd_path);
 
 //	CHAINED-LIST FUNCTIONS
 t_list	*new_link(void *content, int tag);

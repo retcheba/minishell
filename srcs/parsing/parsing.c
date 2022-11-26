@@ -60,16 +60,17 @@ static char	*ft_separate_pipe_and_redirections(t_struct *mini, char *str)
 	while (str[split])
 	{
 		split = ft_check_quotes(str, split);
-		if (str[split] != ' ' && str[split] != '	' && str[split] != '>' && str[split] != '<'
-			&& (str[split + 1] == '|' || str[split + 1] == '>'
-				|| str[split + 1] == '<'))
+		if (str[split] != ' ' && str[split] != '	' && str[split] != '>'
+			&& str[split] != '<' && (str[split + 1] == '|'
+				|| str[split + 1] == '>' || str[split + 1] == '<'))
 		{
 			split++;
 			str = ft_separate_str(mini, str, split);
 		}
 		else if ((str[split] == '|' || str[split] == '>' || str[split] == '<')
-			&& str[split + 1] != ' ' && str[split + 1] != '	' && str[split + 1] != '>'
-			&& str[split + 1] != '<' && str[split + 1] != '\0')
+			&& str[split + 1] != ' ' && str[split + 1] != '	'
+			&& str[split + 1] != '>' && str[split + 1] != '<'
+			&& str[split + 1] != '\0')
 		{
 			split++;
 			str = ft_separate_str(mini, str, (split));

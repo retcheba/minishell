@@ -39,6 +39,13 @@ static int	ft_len_cmd(t_struct *mini)
 	return (len);
 }
 
+static void	fill_cmd(t_struct *mini, char **cmd, int *len)
+{
+	cmd[*len] = ft_substr(mini->lst1->content, 0, \
+		ft_strlen(mini->lst1->content));
+	*len += 1;
+}
+
 static char	**fill_tab_cmd(t_struct *mini, char **cmd)
 {
 	t_list	*begin;
@@ -50,17 +57,12 @@ static char	**fill_tab_cmd(t_struct *mini, char **cmd)
 	{
 		if (mini->lst1->tag == CMD || mini->lst1->tag == BUILTIN)
 		{
-			cmd[len] = ft_substr(mini->lst1->content, 0, \
-				ft_strlen(mini->lst1->content));
+			fill_cmd(mini, cmd, &len);
 			mini->lst1 = mini->lst1->next;
 			while (mini->lst1 && mini->lst1->tag != PIPE)
 			{
 				if (mini->lst1->tag == ARG)
-				{
-					len++;
-					cmd[len] = ft_substr(mini->lst1->content, 0, \
-						ft_strlen(mini->lst1->content));
-				}
+					fill_cmd(mini, cmd, &len);
 				mini->lst1 = mini->lst1->next;
 			}
 			break ;

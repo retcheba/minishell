@@ -70,7 +70,6 @@ void	what_to_execute(t_struct *mini)
 	error = 0;
 	if (!(is_syntax_error(mini)))
 	{
-		g_status = 0;
 		check_what(mini, &pipex, &builtin, &cmd);
 		if (pipex > 0)
 			ft_prepare_pipex(mini);

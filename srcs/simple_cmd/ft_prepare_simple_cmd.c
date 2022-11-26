@@ -39,7 +39,14 @@ static int	ft_len_cmd(t_struct *mini)
 	return (len + 1);
 }
 
-static char	**ft_get_cmd(t_struct *mini, char **cmd)
+static void	fill_cmd(t_struct *mini, char **cmd, int *i)
+{
+	cmd[*i] = ft_substr(mini->lst1->content, 0, \
+		ft_strlen(mini->lst1->content));
+	*i += 1;
+}
+
+static char	**fill_tab_cmd(t_struct *mini, char **cmd)
 {
 	int		i;
 	t_list	*begin;
@@ -50,17 +57,12 @@ static char	**ft_get_cmd(t_struct *mini, char **cmd)
 	{
 		if (mini->lst1->tag == CMD || mini->lst1->tag == BUILTIN)
 		{
-			cmd[i] = ft_substr(mini->lst1->content, 0, \
-				ft_strlen(mini->lst1->content));
+			fill_cmd(mini, cmd, &i);
 			mini->lst1 = mini->lst1->next;
 			while (mini->lst1)
 			{
 				if (mini->lst1->tag == ARG)
-				{
-					i++;
-					cmd[i] = ft_substr(mini->lst1->content, 0, \
-						ft_strlen(mini->lst1->content));
-				}
+					fill_cmd(mini, cmd, &i);
 				mini->lst1 = mini->lst1->next;
 			}
 			break ;
@@ -86,7 +88,7 @@ int	ft_prepare_simple_cmd(t_struct *mini)
 	if (!cmd)
 		return (1);
 	cmd[len - 1] = NULL;
-	cmd = ft_get_cmd(mini, cmd);
+	cmd = fill_tab_cmd(mini, cmd);
 	check_redirs(mini, &error, &fd_io[0], &fd_io[1]);
 	simple_cmd(mini, cmd, fd_io, error);
 	if (error == 1)

@@ -42,80 +42,37 @@ int	ft_strstr(char *str, char *to_find)
 	return (0);
 }
 
-void	check_redirs(t_struct *mini, int *error, int *fd_in, int *fd_out)
+char	*check_empty_dollar(char *result, char *str)
 {
-	t_list	*begin;
+	char	*tmp;
 
-	begin = mini->lst1;
-	while (mini->lst1 && mini->lst1->tag != PIPE)
+	if (str[ft_strlen(str) - 1] == '$')
 	{
-		if (mini->lst1->tag == REDIR_IN && mini->lst1->next
-			&& mini->lst1->next->tag == FILE)
-		{
-			*fd_in = open(mini->lst1->next->content, O_RDONLY);
-			if (*fd_in == -1 && *error != 1)
-			{
-				ft_putstr_fd(mini->lst1->next->content, 2);
-				ft_putstr_fd(": ", 2);
-				perror("");
-				*error = 1;
-			}
-		}
-		if (mini->lst1->tag == DREDIR_IN && mini->lst1->next->tag == FILE)
-			*fd_in = ft_heredoc(mini->lst1->next->content);
-		if (mini->lst1->tag == REDIR_OUT && mini->lst1->next->tag == FILE && *error != 1)
-		{
-			*fd_out = open(mini->lst1->next->content, O_WRONLY | O_TRUNC \
-				| O_CREAT, 0644);
-			if (*fd_out == -1 && *error != 1)
-			{
-				ft_putstr_fd(mini->lst1->next->content, 2);
-				ft_putstr_fd(": ", 2);
-				perror("");
-				*error = 1;
-			}
-		}
-		if (mini->lst1->tag == DREDIR_OUT && mini->lst1->next->tag == FILE && *error != 1)
-		{
-			*fd_out = open(mini->lst1->next->content, O_WRONLY | O_APPEND \
-				| O_CREAT, 0644);
-			if (*fd_out == -1 && *error != 1)
-			{
-				ft_putstr_fd(mini->lst1->next->content, 2);
-				ft_putstr_fd(": ", 2);
-				perror("");
-				*error = 1;
-			}
-		}
-		mini->lst1 = mini->lst1->next;
+		tmp = result;
+		result = ft_strjoin(result, "$");
+		free(tmp);
 	}
-	mini->lst1 = begin;
+	return (result);
 }
 
-char	**ft_envp(t_struct *mini)
+int	is_numeric(char *num)
 {
-	t_list	*begin;
-	int		i;
+	int	i;
 
-	if (mini->envp != NULL)
-		ft_free_tab(mini->envp);
+	if (ft_strstr(num, "9223372036854775808")
+		|| ft_strstr(num, "-9223372036854775809"))
+		return (0);
 	i = 0;
-	begin = mini->env;
-	while (mini->env)
-	{
+	if (num[i] == '+' || num[i] == '-')
 		i++;
-		mini->env = mini->env->next;
-	}
-	mini->env = begin;
-	mini->envp = malloc(sizeof(char *) * (i + 1));
-	mini->envp[i] = NULL;
-	i = 0;
-	while (mini->env)
-	{
-		mini->envp[i] = ft_strdup(mini->env->content);
+	while (num[i] >= '0' && num[i] <= '9' && num[i])
 		i++;
-		mini->env = mini->env->next;
-	}
-	mini->env = begin;
-	return (mini->envp);
+	if (num[i] == '\0')
+		return (1);
+	return (0);
+}
+
+int	get_status(long long num)
+{
+	return (num % 255 - num / 255);
 }
