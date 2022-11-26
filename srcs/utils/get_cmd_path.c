@@ -75,6 +75,8 @@ static char	**get_all_paths(char **envp)
 	}
 	paths = ft_split(envp_path, ':');
 	free(envp_path);
+	if (paths == NULL)
+		return (NULL);
 	ft_add_backslash(paths);
 	return (paths);
 }
@@ -86,6 +88,8 @@ char	*get_cmd_path(char *cmd, char **envp)
 	int		i;
 
 	paths = get_all_paths(envp);
+	if (paths == NULL)
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{

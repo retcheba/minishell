@@ -102,13 +102,13 @@ char	*cd_home(t_list *env)
 	{
 		if (ft_strncmp((char *)tmp->content, "HOME=", 5) == 0)
 		{
-			printf("tmp->content : %s\n", (char *)tmp->content);
+			//printf("tmp->content : %s\n", (char *)tmp->content);
 			home = ft_substr((char *)tmp->content, 5, ft_strlen(tmp->content));
 			return (home);
 		}
 		tmp = tmp->next;
 	}
-	printf("home : %s\n", home);
+	//printf("home : %s\n", home);
 	if (home == NULL)
 	{
 		ft_putstr_fd("cd: HOME not set\n", 2);
@@ -136,7 +136,7 @@ void	ft_cd(t_struct *mini, char **cmd)
 		home = cd_home(mini->env);
 		command = home;
 		free_list_cd(mini, home);
-		printf("command : %s\n", command);
+		//printf("command : %s\n", command);
 		if (command == NULL)
 			return ;
 	}
