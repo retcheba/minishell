@@ -12,51 +12,6 @@
 
 #include "../../minishell.h"
 
-static void	free_list_cd(t_struct *mini, char *arg)
-{
-	if (mini->free_list == NULL)
-			mini->free_list = new_link(arg, 0);
-	else
-			mini->free_list = add_link_bottom(mini->free_list, \
-				new_link(arg, 0));
-}
-
-static t_list	*update_pwd_in_export_env(t_list *envp, char *pwd)
-{
-	t_list	*tmp;
-
-	tmp = envp;
-	while (envp->next)
-	{
-		if (ft_strncmp((char *)envp->content, "PWD=", 4) == 0)
-		{
-			envp->content = pwd;
-			break ;
-		}
-		envp = envp->next;
-	}
-	envp = tmp;
-	return (envp);
-}
-
-static t_list	*update_oldpwd_in_export_env(t_list *envp, char *oldpwd)
-{
-	t_list	*tmp;
-
-	tmp = envp;
-	while (envp->next)
-	{
-		if (ft_strncmp((char *)envp->content, "OLDPWD=", 7) == 0)
-		{
-			envp->content = oldpwd;
-			break ;
-		}
-		envp = envp->next;
-	}
-	envp = tmp;
-	return (envp);
-}
-
 static void	update_pwd(t_struct *mini, char *command)
 {
 	char	pwd[PATH_MAX];
@@ -70,12 +25,7 @@ static void	update_pwd(t_struct *mini, char *command)
 	free_list_cd(mini, oldpwd);
 	if (chdir(command) == -1)
 	{
-		if (command)
-		{
-			ft_putstr_fd(command, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-		}
-		g_status = 1;
+		check_no_file_or_dir(command);
 		return ;
 	}
 	else
@@ -102,13 +52,11 @@ char	*cd_home(t_list *env)
 	{
 		if (ft_strncmp((char *)tmp->content, "HOME=", 5) == 0)
 		{
-			//printf("tmp->content : %s\n", (char *)tmp->content);
 			home = ft_substr((char *)tmp->content, 5, ft_strlen(tmp->content));
 			return (home);
 		}
 		tmp = tmp->next;
 	}
-	//printf("home : %s\n", home);
 	if (home == NULL)
 	{
 		ft_putstr_fd("cd: HOME not set\n", 2);
@@ -136,7 +84,6 @@ void	ft_cd(t_struct *mini, char **cmd)
 		home = cd_home(mini->env);
 		command = home;
 		free_list_cd(mini, home);
-		//printf("command : %s\n", command);
 		if (command == NULL)
 			return ;
 	}

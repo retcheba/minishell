@@ -121,6 +121,10 @@ void	ft_print_error(char *cast);
 void	ft_unset(t_struct *mini, char **cmd);
 //cd
 void	ft_cd(t_struct *mini, char **cmd);
+void	free_list_cd(t_struct *mini, char *arg);
+void	check_no_file_or_dir(char *command);
+t_list	*update_pwd_in_export_env(t_list *envp, char *pwd);
+t_list	*update_oldpwd_in_export_env(t_list *envp, char *oldpwd);
 //exit
 void	ft_exit(t_struct *mini);
 int		check_exit_args(t_struct *mini);
