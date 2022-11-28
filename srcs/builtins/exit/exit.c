@@ -29,7 +29,6 @@ static void	ft_free_the_free_list(t_struct *mini)
 void	ft_exit(t_struct *mini)
 {
 	printf ("exit\n");
-	free(mini->buff);
 	ft_free_tab(mini->tab);
 	ft_free_list(mini->lst1);
 	ft_free_the_free_list(mini);

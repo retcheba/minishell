@@ -73,7 +73,10 @@ typedef struct s_pipex
 //	MAIN FUNCTIONS
 void	ft_tag_word(t_struct *mini);
 void	what_to_execute(t_struct *mini);
+
+//	SIGNAL
 void	sig_handler(int sig);
+void	sig_handler_heredoc(int sig);
 
 //	PARSING FUNCTIONS
 int		parsing(t_struct *mini, char **envp);

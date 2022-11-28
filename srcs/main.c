@@ -44,6 +44,15 @@ static void	ft_init_minishell(t_struct *mini, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+static void	save_buff(t_struct *mini)
+{
+	if (mini->free_list == NULL)
+		mini->free_list = new_link(mini->buff, 0);
+	else
+		mini->free_list = add_link_bottom(mini->free_list, \
+			new_link(mini->buff, 0));
+}
+
 static int	is_empty_buff(char *buff)
 {
 	int	i;
@@ -68,6 +77,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1 == 1)
 	{
 		mini.buff = readline("\033[1;91mminishell\033[0m  ");
+		save_buff(&mini);
 		add_history(mini.buff);
 		if (is_empty_buff(mini.buff))
 		{
@@ -82,7 +92,6 @@ int	main(int argc, char **argv, char **envp)
 			ft_free_tab(mini.tab);
 			ft_free_list(mini.lst1);
 		}
-		free(mini.buff);
 	}
 	return (0);
 }

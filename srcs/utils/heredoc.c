@@ -12,6 +12,17 @@
 
 #include "../minishell.h"
 
+static int	is_signal(int fd_heredoc[2])
+{
+	if (g_status == 130)
+	{
+		close (fd_heredoc[0]);
+		close (fd_heredoc[1]);
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_heredoc(char *stop)
 {
 	int		fd_heredoc[2];
@@ -22,6 +33,8 @@ int	ft_heredoc(char *stop)
 	{
 		while (1 == 1)
 		{
+			if (is_signal(fd_heredoc))
+				return (0);
 			buff = readline(">");
 			if (ft_strstr(buff, stop))
 			{
@@ -30,6 +43,7 @@ int	ft_heredoc(char *stop)
 				return (fd_heredoc[0]);
 			}
 			ft_putendl_fd(buff, fd_heredoc[1]);
+			free(buff);
 		}
 	}
 	perror("Error");
