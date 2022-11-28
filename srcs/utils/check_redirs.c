@@ -60,13 +60,26 @@ static void	check_redir_out(t_list **lst, int *error, int *fd_out)
 void	check_redirs(t_struct *mini, int *error, int *fd_in, int *fd_out)
 {
 	t_list	*begin;
+	int		fd_io[2];
 
+	fd_io[0] = 0;
+	fd_io[1] = 0;
 	begin = mini->lst1;
 	while (mini->lst1 && mini->lst1->tag != PIPE)
 	{
-		check_redir_in(&mini->lst1, error, fd_in);
-		check_redir_out(&mini->lst1, error, fd_out);
+		if (fd_in == NULL)
+			check_redir_in(&mini->lst1, error, &fd_io[0]);
+		else
+			check_redir_in(&mini->lst1, error, fd_in);
+		if (fd_out == NULL)
+			check_redir_out(&mini->lst1, error, &fd_io[1]);
+		else
+			check_redir_out(&mini->lst1, error, fd_out);
 		mini->lst1 = mini->lst1->next;
 	}
 	mini->lst1 = begin;
+	if (fd_io[0] != 0)
+		close (fd_io[0]);
+	if (fd_io[1] != 0)
+		close (fd_io[1]);
 }
