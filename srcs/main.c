@@ -48,8 +48,6 @@ static int	is_empty_buff(char *buff)
 {
 	int	i;
 
-	if (buff == NULL)
-		return (0);
 	i = 0;
 	while (buff[i])
 	{
@@ -84,6 +82,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_free_tab(mini.tab);
 			ft_free_list(mini.lst1);
 		}
+		free(mini.buff);
 	}
 	return (0);
 }
