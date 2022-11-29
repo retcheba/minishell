@@ -34,17 +34,8 @@ void	sig_handler(int sig)
 	}
 }
 
-void	sig_handler_herdeoc(int sig)
+void	sig_handler_heredoc(int sig)
 {
-	if (sig == 11)
-	{
-		printf("warning: here-document delimited by end-of-file\n");
-		exit(0);
-	}
-	else if (sig == 2)
-	{
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_replace_line("\n", 0);
-		exit(0);
-	}
+	if (sig == 2)
+		exit(1);
 }

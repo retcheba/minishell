@@ -17,7 +17,11 @@ int	ft_heredoc(char *stop)
 	pid_t	pid;
 	int		fd_heredoc[2];
 	char	*buff;
+	int		status;
+	int		error;
 
+	status = 0;
+	error = 0;
 	buff = NULL;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGSEGV, SIG_IGN);
@@ -30,11 +34,14 @@ int	ft_heredoc(char *stop)
 		else if (pid == 0)
 		{
 			signal(SIGINT, sig_handler_heredoc);
-			signal(SIGSEGV, sig_handler_heredoc);
-			signal(SIGQUIT, SIG_IGN);
 			while (1 == 1)
 			{
 				buff = readline(">");
+				if (buff == NULL)
+				{
+					printf("warning: here-document delimited by end-of-file\n");
+					exit(1);
+				}
 				if (ft_strstr(buff, stop))
 				{
 					free(buff);
@@ -43,10 +50,10 @@ int	ft_heredoc(char *stop)
 				ft_putendl_fd(buff, fd_heredoc[1]);
 				free(buff);
 			}
-			
 		}
-		waitpid(pid, NULL, 0);
-		
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+					error = WEXITSTATUS(status);
 	}
 	else
 	{
@@ -57,5 +64,10 @@ int	ft_heredoc(char *stop)
 	signal(SIGSEGV, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	close (fd_heredoc[1]);
+	if (error == 1)
+	{
+		close(fd_heredoc[0]);
+		return (0);
+	}
 	return (fd_heredoc[0]);
 }
