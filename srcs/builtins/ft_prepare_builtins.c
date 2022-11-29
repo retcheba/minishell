@@ -19,7 +19,7 @@ void	ft_prepare_builtins(t_struct *mini, char **cmd)
 	if (ft_strstr(cmd[0], "pwd"))
 		ft_pwd();
 	if (ft_strstr(cmd[0], "env"))
-		print_env(mini->env);
+		print_env(cmd, mini->env);
 	if (ft_strstr(cmd[0], "export"))
 		check_export_args(mini, cmd);
 	if (ft_strstr(cmd[0], "unset"))

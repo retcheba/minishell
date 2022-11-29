@@ -113,7 +113,7 @@ void	ft_echo(char **cmd);
 void	ft_pwd(void);
 //env
 void	ft_init_env(t_struct *mini, char **envp);
-void	print_env(t_list *env);
+void	print_env(char **cmd, t_list *env);
 //export
 void	ft_init_export(t_struct *mini, char **envp);
 void	print_export(t_list *export);

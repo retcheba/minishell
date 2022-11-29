@@ -13,17 +13,27 @@
 #include "../../minishell.h"
 
 //prints env 
-void	print_env(t_list *env)
+void	print_env(char **cmd, t_list *env)
 {
 	t_list	*tmp;
 
 	tmp = env;
-	while (tmp)
+	if (cmd[1] == NULL)
 	{
-		printf("%s\n", (char *)tmp->content);
-		tmp = tmp->next;
+		while (tmp)
+		{
+			printf("%s\n", (char *)tmp->content);
+			tmp = tmp->next;
+		}
+		g_status = 0;
 	}
-	g_status = 0;
+	else
+	{
+		ft_putstr_fd("‘", 2);
+		ft_putstr_fd(cmd[1], 2);
+		ft_putstr_fd("’: No such file or directory\n", 2);
+		g_status = 127;
+	}
 }
 
 //creates the env-list

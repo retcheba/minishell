@@ -38,7 +38,11 @@ int	is_only_alpha(char *s)
 	i = 0;
 	while (s[i] && s[i] != '=' && !(s[i] == '+' && s[i + 1] == '='))
 	{
-		if (!(s[i] >= 'A' && s[i] <= 'Z') && !(s[i] >= 'a' && s[i] <= 'z'))
+		if (i == 0
+			&& !(s[i] >= 'A' && s[i] <= 'Z') && !(s[i] >= 'a' && s[i] <= 'z'))
+			return (1);
+		else if (!(s[i] >= 'A' && s[i] <= 'Z') && !(s[i] >= 'a' && s[i] <= 'z')
+			&& !(s[i] >= '0' && s[i] <= '9'))
 			return (1);
 		i++;
 	}
