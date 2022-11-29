@@ -12,16 +12,14 @@
 
 #include "../minishell.h"
 
-int	ft_heredoc(char *stop)
+int	ft_heredoc(char *stop, int *value)
 {
 	pid_t	pid;
 	int		fd_heredoc[2];
 	char	*buff;
 	int		status;
-	int		error;
 
 	status = 0;
-	error = 0;
 	buff = NULL;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGSEGV, SIG_IGN);
@@ -53,7 +51,7 @@ int	ft_heredoc(char *stop)
 		}
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
-					error = WEXITSTATUS(status);
+					*value = WEXITSTATUS(status);
 	}
 	else
 	{
@@ -64,7 +62,7 @@ int	ft_heredoc(char *stop)
 	signal(SIGSEGV, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	close (fd_heredoc[1]);
-	if (error == 1)
+	if (*value == 1 || *value == 2)
 	{
 		close(fd_heredoc[0]);
 		return (0);

@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static void	check_redir_in(t_list **lst, int *error, int *fd_in)
+static void	check_redir_in(t_list **lst, int *error, int *fd_in, int *value)
 {
 	if ((*lst)->tag == REDIR_IN && (*lst)->next && (*lst)->next->tag == FILE)
 	{
@@ -25,8 +25,8 @@ static void	check_redir_in(t_list **lst, int *error, int *fd_in)
 			*error = 1;
 		}
 	}
-	if ((*lst)->tag == DREDIR_IN && (*lst)->next->tag == FILE)
-		*fd_in = ft_heredoc((*lst)->next->content);
+	if ((*lst)->tag == DREDIR_IN && (*lst)->next->tag == FILE && *value != 2)
+		*fd_in = ft_heredoc((*lst)->next->content, value);
 }
 
 static void	check_redir_out(t_list **lst, int *error, int *fd_out)
@@ -61,16 +61,18 @@ void	check_redirs(t_struct *mini, int *error, int *fd_in, int *fd_out)
 {
 	t_list	*begin;
 	int		fd_io[2];
+	int		value;
 
+	value = 0;
 	fd_io[0] = 0;
 	fd_io[1] = 0;
 	begin = mini->lst1;
 	while (mini->lst1 && mini->lst1->tag != PIPE)
 	{
 		if (fd_in == NULL)
-			check_redir_in(&mini->lst1, error, &fd_io[0]);
+			check_redir_in(&mini->lst1, error, &fd_io[0], &value);
 		else
-			check_redir_in(&mini->lst1, error, fd_in);
+			check_redir_in(&mini->lst1, error, fd_in, &value);
 		if (fd_out == NULL)
 			check_redir_out(&mini->lst1, error, &fd_io[1]);
 		else

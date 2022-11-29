@@ -150,7 +150,7 @@ t_list	*ft_listlast(t_list *lst, int i);
 
 //	UTILS FUNCTIONS
 char	*get_cmd_path(char *cmd, char **envp);
-int		ft_heredoc(char *stop);
+int		ft_heredoc(char *stop, int *value);
 void	ft_free_tab(char **tab);
 int		ft_strstr(char *str, char *to_find);
 void	check_redirs(t_struct *mini, int *error, int *fd_in, int *fd_out);
