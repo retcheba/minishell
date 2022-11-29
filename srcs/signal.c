@@ -33,3 +33,18 @@ void	sig_handler(int sig)
 		rl_on_new_line();
 	}
 }
+
+void	sig_handler_herdeoc(int sig)
+{
+	if (sig == 11)
+	{
+		printf("warning: here-document delimited by end-of-file\n");
+		exit(0);
+	}
+	else if (sig == 2)
+	{
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_replace_line("\n", 0);
+		exit(0);
+	}
+}
