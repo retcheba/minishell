@@ -122,7 +122,8 @@ void	check_export_args(t_struct *mini, char **cmd);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_swap_content(t_list **list);
 int		is_only_alpha(char *s);
-void	ft_print_error(char *cast);
+int		ft_print_error(char *cast);
+void	save_content(t_struct *mini, char *content);
 //unset
 void	ft_unset(t_struct *mini, char **cmd);
 //cd

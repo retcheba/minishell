@@ -25,8 +25,16 @@ void	check_no_file_or_dir(char *command)
 {
 	if (command)
 	{
-		ft_putstr_fd(command, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		if (access(command, F_OK) == 0)
+		{
+			ft_putstr_fd(command, 2);
+			ft_putstr_fd(": Not a directory\n", 2);
+		}
+		else
+		{
+			ft_putstr_fd(command, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+		}
 	}
 	g_status = 1;
 }

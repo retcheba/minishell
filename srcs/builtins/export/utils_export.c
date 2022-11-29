@@ -47,10 +47,20 @@ int	is_only_alpha(char *s)
 	return (0);
 }
 
-void	ft_print_error(char *cast)
+int	ft_print_error(char *cast)
 {
 	write(2, "export: \'", 9);
 	write(2, cast, ft_strlen(cast));
 	write(2, "\' : not a valid identifier\n", 27);
 	g_status = 1;
+	return (1);
+}
+
+void	save_content(t_struct *mini, char *content)
+{
+	if (mini->free_list == NULL)
+		mini->free_list = new_link(content, 0);
+	else
+		mini->free_list = add_link_bottom(mini->free_list, \
+			new_link(content, 0));
 }

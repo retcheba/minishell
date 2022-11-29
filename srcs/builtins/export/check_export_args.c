@@ -91,7 +91,7 @@ static int	search_in_envp(t_struct *mini, t_list *envp, char *content)
 	return (1);
 }
 
-static void	put_in_envp(t_struct *mini, char *content)
+static void	put_in_envp(t_struct *mini, char *content, int error)
 {
 	if (ft_strnstr(content, "+=", ft_strlen(content)))
 	{
@@ -114,14 +114,17 @@ static void	put_in_envp(t_struct *mini, char *content)
 		if (search_in_envp(mini, mini->export, content))
 			mini->export = add_link_bottom(mini->export, new_link(content, 0));
 	}
-	g_status = 0;
+	if (error != 1)
+		g_status = 0;
 }
 
 void	check_export_args(t_struct *mini, char **cmd)
 {
 	char	*content;
 	int		i;
+	int		error;
 
+	error = 0;
 	if (cmd[1] == NULL)
 		print_export(mini->export);
 	i = 1;
@@ -130,16 +133,12 @@ void	check_export_args(t_struct *mini, char **cmd)
 		if (!(cmd[i][0] == '_' && cmd[i][1] == '='))
 		{
 			if (is_only_alpha(cmd[i]))
-				ft_print_error(cmd[i]);
+				error = ft_print_error(cmd[i]);
 			else
 			{
 				content = ft_strdup(cmd[i]);
-				if (mini->free_list == NULL)
-					mini->free_list = new_link(content, 0);
-				else
-					mini->free_list = add_link_bottom(mini->free_list, \
-						new_link(content, 0));
-				put_in_envp(mini, content);
+				save_content(mini, content);
+				put_in_envp(mini, content, error);
 			}
 		}
 		i++;

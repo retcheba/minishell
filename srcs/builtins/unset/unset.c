@@ -12,6 +12,22 @@
 
 #include "../../minishell.h"
 
+static int	is_only_alpha_unset(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (!(s[i] >= 'A' && s[i] <= 'Z') && !(s[i] >= 'a' && s[i] <= 'z'))
+			return (1);
+		i++;
+	}
+	if (i == 0)
+		return (1);
+	return (0);
+}
+
 static t_list	*ft_remove_link(t_list **begin, t_list *current)
 {
 	t_list	*previous;
@@ -86,13 +102,24 @@ static void	ft_remove_in_env(t_struct *mini, char *unset)
 void	ft_unset(t_struct *mini, char **cmd)
 {
 	int	i;
+	int	error;
 
+	error = 0;
 	i = 1;
 	while (cmd[i])
 	{
-		ft_remove_in_export(mini, cmd[i]);
-		ft_remove_in_env(mini, cmd[i]);
+		if (is_only_alpha_unset(cmd[i]))
+		{
+			ft_print_error(cmd[i]);
+			error = 1;
+		}
+		else
+		{
+			ft_remove_in_export(mini, cmd[i]);
+			ft_remove_in_env(mini, cmd[i]);
+		}
 		i++;
 	}
-	g_status = 0;
+	if (error != 1)
+		g_status = 0;
 }
