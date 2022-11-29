@@ -89,7 +89,6 @@ void	simple_cmd(t_struct *mini, char **cmd, int fd_io[2], int error)
 			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
 					g_status = WEXITSTATUS(status);
-			sig_init();
 		}
 	}
 	ft_free_cmd(cmd_path, cmd);

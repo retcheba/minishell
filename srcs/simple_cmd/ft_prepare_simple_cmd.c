@@ -91,6 +91,7 @@ int	ft_prepare_simple_cmd(t_struct *mini)
 	cmd = fill_tab_cmd(mini, cmd);
 	check_redirs(mini, &error, &fd_io[0], &fd_io[1]);
 	simple_cmd(mini, cmd, fd_io, error);
+	sig_init();
 	if (error == 1)
 		g_status = 1;
 	return (0);

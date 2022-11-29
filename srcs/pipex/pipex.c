@@ -38,6 +38,7 @@ static void	ft_execute_waitpid(t_pipex *pipex)
 void	ft_pipex(t_pipex *pipex, char ***cmds, t_struct *mini, int *fd_ios[2])
 {
 	pipex->list = NULL;
+	sig_child();
 	first_cmd(pipex, cmds, mini, fd_ios[0]);
 	pipex->index = 2;
 	while (pipex->index < pipex->nb_cmds)
@@ -50,4 +51,5 @@ void	ft_pipex(t_pipex *pipex, char ***cmds, t_struct *mini, int *fd_ios[2])
 	}
 	last_cmd(pipex, cmds, mini, fd_ios[pipex->nb_cmds - 1]);
 	ft_execute_waitpid(pipex);
+	sig_init();
 }
