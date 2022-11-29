@@ -12,31 +12,61 @@
 
 #include "minishell.h"
 
-static int	is_syntax_error(t_struct *mini)
+static int	is_syntax_error2(t_struct *mini)
 {
-	int		error;
 	t_list	*begin;
 
-	error = 0;
 	begin = mini->lst1;
-	if (mini->lst1->tag == PIPE)
-	{
-		write(2, "syntax error near unexpected token `|'\n", 39);
-		error = 1;
-	}
 	while (mini->lst1)
 	{
-		if ((mini->lst1->tag == PIPE || mini->lst1->tag == REDIR_IN
-				|| mini->lst1->tag == DREDIR_IN || mini->lst1->tag == REDIR_OUT
-				|| mini->lst1->tag == DREDIR_OUT) && mini->lst1->next == NULL)
+		if (is_tag(mini->lst1->tag))
 		{
-			write(2, "syntax error near unexpected token `newline'\n", 45);
-			error = 1;
+			if (mini->lst1->next == NULL)
+			{
+				ft_putstr_fd("syntax error near unexpected token\n", 2);
+				mini->lst1 = begin;
+				return (1);
+			}
+			else if (is_tag(mini->lst1->next->tag))
+			{
+				ft_putstr_fd("syntax error near unexpected token\n", 2);
+				mini->lst1 = begin;
+				return (1);
+			}
 		}
 		mini->lst1 = mini->lst1->next;
 	}
 	mini->lst1 = begin;
-	return (error);
+	return (0);
+}
+
+static int	is_syntax_error(t_struct *mini)
+{
+	t_list	*begin;
+
+	if (mini->lst1->tag == PIPE && mini->lst1->next != NULL)
+	{
+		if (mini->lst1->next->tag != PIPE)
+		{
+			ft_putstr_fd("syntax error near unexpected token\n", 2);
+			return (1);
+		}
+	}
+	begin = mini->lst1;
+	while (mini->lst1)
+	{
+		if (!is_tag(mini->lst1->tag) && check_content(mini->lst1->content))
+		{
+			ft_putstr_fd("syntax error near unexpected token\n", 2);
+			mini->lst1 = begin;
+			return (1);
+		}
+		mini->lst1 = mini->lst1->next;
+	}
+	mini->lst1 = begin;
+	if (is_syntax_error2(mini))
+		return (1);
+	return (0);
 }
 
 static void	check_what(t_struct *mini, int	*pipex, int	*builtin, int *cmd)

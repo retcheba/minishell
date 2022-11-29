@@ -161,5 +161,7 @@ char	**ft_envp(t_struct *mini);
 char	*check_empty_dollar(char *result, char *str);
 int		is_numeric(char *num);
 int		get_status(long long num);
+int		is_tag(int tag);
+int		check_content(char *str);
 
 #endif
