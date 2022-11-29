@@ -37,5 +37,8 @@ void	sig_handler(int sig)
 void	sig_handler_heredoc(int sig)
 {
 	if (sig == 2)
+	{
+		printf("\n");
 		exit(2);
+	}
 }
