@@ -18,6 +18,26 @@ sig=2 -> ^C
 sig=11 -> ^D
 */
 
+void	sig_ign(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGSEGV, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	sig_init(void)
+{
+	signal(SIGINT, sig_handler);
+	signal(SIGSEGV, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	sig_child(void)
+{
+	signal(SIGINT, sig_handler_child);
+	signal(SIGQUIT, sig_handler_child);
+}
+
 void	sig_handler(int sig)
 {
 	if (sig == 11)
@@ -28,17 +48,23 @@ void	sig_handler(int sig)
 	else if (sig == 2)
 	{
 		g_status = 130;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 
-void	sig_handler_heredoc(int sig)
+void	sig_handler_child(int sig)
 {
 	if (sig == 2)
 	{
 		printf("\n");
-		exit(2);
+		g_status = 130;
+	}
+	else if (sig == 3)
+	{
+		printf("Quit (core dumped)\n");
+		g_status = 130;
 	}
 }

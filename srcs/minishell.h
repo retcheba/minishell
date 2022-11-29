@@ -76,7 +76,10 @@ void	what_to_execute(t_struct *mini);
 
 //	SIGNAL
 void	sig_handler(int sig);
-void	sig_handler_heredoc(int sig);
+void	sig_handler_child(int sig);
+void	sig_ign(void);
+void	sig_init(void);
+void	sig_child(void);
 
 //	PARSING FUNCTIONS
 int		parsing(t_struct *mini, char **envp);

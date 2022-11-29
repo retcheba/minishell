@@ -12,6 +12,15 @@
 
 #include "../minishell.h"
 
+static void	sig_handler_heredoc(int sig)
+{
+	if (sig == 2)
+	{
+		printf("\n");
+		exit(2);
+	}
+}
+
 static void	child_heredoc(char *stop, int fd_heredoc[2])
 {
 	char	*buff;
@@ -34,20 +43,6 @@ static void	child_heredoc(char *stop, int fd_heredoc[2])
 		ft_putendl_fd(buff, fd_heredoc[1]);
 		free(buff);
 	}
-}
-
-static void	sig_ign(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGSEGV, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-static void	sig_init(void)
-{
-	signal(SIGINT, sig_handler);
-	signal(SIGSEGV, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 int	ft_heredoc(char *stop, int *value)
