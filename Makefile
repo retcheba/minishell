@@ -7,7 +7,7 @@ SRCS		= main.c ft_tag_word.c what_to_execute.c signal.c \
 				pipex/pipex_error.c pipex/pipex_utils.c pipex/chained_list_pipex.c \
 				utils/ft_envp.c utils/get_cmd_path.c utils/check_redirs.c utils/heredoc.c utils/chained_list.c utils/minishell_utils.c utils/what_to_execute_utils.c
 OBJS		= $(addprefix srcs/, $(SRCS:.c=.o))
-CC			= gcc
+CC			= clang
 CFLAGS		= -g -Wall -Wextra -Werror
 LFLAGS		= -lreadline 
 NAME		= minishell

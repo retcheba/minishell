@@ -14,7 +14,8 @@
 
 int	g_status = 0;
 
-	/*
+static void	ft_init_minishell(t_struct *mini, char **envp)
+{
 	printf("\033[H\033[2J\033[1;96m-----------------------------------------");
 	printf("\033[1;96m--------------------------\033[0m\n");
 	printf("\033[91m███╗   ███╗██╗███╗   ██╗██╗");
@@ -32,10 +33,6 @@ int	g_status = 0;
 	printf("\033[1;96mMade by: subrandt & retcheba\033[0m\n");
 	printf("\033[1;96m-----------------------------------------");
 	printf("\033[1;96m--------------------------\033[0m\n\n");
-	*/
-
-static void	ft_init_minishell(t_struct *mini, char **envp)
-{
 	ft_init_env(mini, envp);
 	ft_init_export(mini, envp);
 	mini->envp = NULL;

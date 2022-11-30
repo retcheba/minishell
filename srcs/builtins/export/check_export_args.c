@@ -12,9 +12,6 @@
 
 #include "../../minishell.h"
 
-//si export toto - ajout dans export
-//si export toto= ou toto=12  ajout dans export et env
-
 static char	*attach_end(t_struct *mini, t_list *envp, char *content, char *cast)
 {
 	char			*result;
