@@ -16,6 +16,8 @@ static void	check_redir_in(t_list **lst, int *error, int *fd_in, int *value)
 {
 	if ((*lst)->tag == REDIR_IN && (*lst)->next && (*lst)->next->tag == FILE)
 	{
+		if (*fd_in != 0)
+			close (*fd_in);
 		*fd_in = open((*lst)->next->content, O_RDONLY);
 		if (*fd_in == -1 && *error != 1)
 		{
@@ -26,34 +28,40 @@ static void	check_redir_in(t_list **lst, int *error, int *fd_in, int *value)
 		}
 	}
 	if ((*lst)->tag == DREDIR_IN && (*lst)->next->tag == FILE && *value != 2)
+	{
+		if (*fd_in != 0)
+			close (*fd_in);
 		*fd_in = ft_heredoc((*lst)->next->content, value);
+	}
+}
+
+static void	print_open_error(t_list **lst, int *error)
+{
+	ft_putstr_fd((*lst)->next->content, 2);
+	ft_putstr_fd(": ", 2);
+	perror("");
+	*error = 1;
 }
 
 static void	check_redir_out(t_list **lst, int *error, int *fd_out)
 {
 	if ((*lst)->tag == REDIR_OUT && (*lst)->next->tag == FILE && *error != 1)
 	{
+		if (*fd_out != 0)
+			close (*fd_out);
 		*fd_out = open((*lst)->next->content, O_WRONLY | O_TRUNC \
 			| O_CREAT, 0644);
 		if (*fd_out == -1 && *error != 1)
-		{
-			ft_putstr_fd((*lst)->next->content, 2);
-			ft_putstr_fd(": ", 2);
-			perror("");
-			*error = 1;
-		}
+			print_open_error(lst, error);
 	}
 	if ((*lst)->tag == DREDIR_OUT && (*lst)->next->tag == FILE && *error != 1)
 	{
+		if (*fd_out != 0)
+			close (*fd_out);
 		*fd_out = open((*lst)->next->content, O_WRONLY | O_APPEND \
 			| O_CREAT, 0644);
 		if (*fd_out == -1 && *error != 1)
-		{
-			ft_putstr_fd((*lst)->next->content, 2);
-			ft_putstr_fd(": ", 2);
-			perror("");
-			*error = 1;
-		}
+			print_open_error(lst, error);
 	}
 }
 
