@@ -27,7 +27,7 @@ static int	is_syntax_error2(t_struct *mini)
 				mini->lst1 = begin;
 				return (1);
 			}
-			else if (is_tag(mini->lst1->next->tag) && mini->lst1->tag != PIPE)
+			else if (is_tag(mini->lst1->next->tag))
 			{
 				ft_putstr_fd("syntax error near unexpected token\n", 2);
 				mini->lst1 = begin;
