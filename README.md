@@ -4,7 +4,12 @@
 
 Ce projet est executable uniquement sous Linux.
 
-### Lancement :
+### Compilation :
   ```
 make && ./minishell
+  ```
+
+### Lancement :
+  ```
+./minishell
   ```
