@@ -15,6 +15,7 @@ make
   ```
 
 # Qu'est-ce que Minishell ?
+### Le sujet
 L’objectif de ce projet est de créer un shell minimaliste.
 
 Ça sera votre petit bash à vous.
